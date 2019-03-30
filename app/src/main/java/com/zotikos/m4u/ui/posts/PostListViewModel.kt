@@ -1,55 +1,82 @@
-package com.zotikos.m4u.ui.post
+package com.zotikos.m4u.ui.posts
 
-import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.zotikos.m4u.data.repository.PostRepository
 import com.zotikos.m4u.ui.base.BaseViewModel
+import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.ui.vo.Resource
 import com.zotikos.m4u.util.SchedulerProvider
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+
 
 class PostListViewModel(
-     val repository: PostRepository,
-     val schedulerProvider: SchedulerProvider
+    private val repository: PostRepository,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
-    private lateinit var subscription: Disposable
 
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val disposable by lazy { CompositeDisposable() }
 
-    init {
-        loadPosts()
-    }
+    private val _dataList = MutableLiveData<Resource<List<PostUIDto>>>()
 
-    private fun loadPosts() {
-        subscription = repository.getPosts()
-            .compose(schedulerProvider.getSchedulersForObservable())
+
+    //  private val _repoLoadError = MutableLiveData<Boolean>()
+    // val errorMessage: MutableLiveData<Int> = MutableLiveData()
+    //  private val _loading = MutableLiveData<Boolean>()
+
+    fun loadPosts() {
+        disposable.add(repository.getPosts()
+            .compose(schedulerProvider.getSchedulersForObservable()).map { postList ->
+                postList.map { PostUIDto(it) }
+            }
             .doOnSubscribe { onRetrievePostListStart() }
             .doOnTerminate { onRetrievePostListFinish() }
             .subscribe(
-                { onRetrievePostListSuccess() },
+                // Add result
+                { result -> onRetrievePostListSuccess(result) },
                 { onRetrievePostListError() }
-            )
+
+            ))
+    }
+
+    fun getPosts(): LiveData<Resource<List<PostUIDto>>> {
+        return _dataList
     }
 
 
+/*    fun getError(): LiveData<Boolean> {
+        return _repoLoadError
+    }
+
+    fun getLoadingVisibility(): LiveData<Boolean> {
+        return _loading
+    }*/
+
     private fun onRetrievePostListStart() {
-        loadingVisibility.value = View.VISIBLE
+        _dataList.value = Resource.loading(mutableListOf())
+        // errorMessage.value = null
     }
 
     private fun onRetrievePostListFinish() {
-        loadingVisibility.value = View.GONE
+        //_loading.value = false
     }
 
-    private fun onRetrievePostListSuccess() {
-
+    private fun onRetrievePostListSuccess(postList: List<PostUIDto>) {
+        /// _repoLoadError.value = false
+        // _loading.value = false
+        _dataList.value = Resource.success(postList)
     }
 
     private fun onRetrievePostListError() {
-
+        //errorMessage.value = com.zotikos.m4u.R.string.post_error
+        //  _repoLoadError.value = true
+        _dataList.value = Resource.error("error", mutableListOf())
     }
 
     override fun onCleared() {
+        disposable.clear()
+        disposable.dispose()
         super.onCleared()
-        subscription.dispose()
     }
 }

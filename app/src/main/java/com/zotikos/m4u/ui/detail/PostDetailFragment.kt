@@ -1,62 +1,77 @@
 package com.zotikos.m4u.ui.detail
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.zotikos.m4u.R
+import com.zotikos.m4u.databinding.FragmentPostDetailBinding
+import com.zotikos.m4u.di.module.ViewModelFactory
+import com.zotikos.m4u.ui.base.BaseFragment
+import com.zotikos.m4u.ui.vo.PostUIDto
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [PostDetailFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [PostDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class PostDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+private const val ARG_POST_ITEM = "post_item"
+
+
+class PostDetailFragment : BaseFragment() {
+
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var viewModel: PostDetailsViewModel
+
+    private lateinit var binding: FragmentPostDetailBinding
+
+
+    private var selectedPostItem: PostUIDto? = null
     private var listener: OnFragmentInteractionListener? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            selectedPostItem = it.getParcelable(ARG_POST_ITEM)
         }
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(PostDetailsViewModel::class.java).also {
+                it.postItem = selectedPostItem
+            }
+        } ?: throw Exception("Invalid Activity")
+        observeViewModel()
     }
+
+
+    private fun observeViewModel() {
+
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_detail, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
 
     override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -65,39 +80,21 @@ class PostDetailFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
+
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        //nothing
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PostDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
+        const val FRAGMENT_TAG = "PostDetailFragment"
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(post: PostUIDto) =
             PostDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+                arguments = bundleOf(ARG_POST_ITEM to post)
             }
     }
+
+    override fun layoutRes(): Int = R.layout.fragment_post_detail
 }

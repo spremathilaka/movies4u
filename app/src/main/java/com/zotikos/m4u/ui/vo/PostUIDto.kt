@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.dto
+package com.zotikos.m4u.ui.vo
 
 import android.os.Parcelable
 import com.zotikos.m4u.data.model.Post

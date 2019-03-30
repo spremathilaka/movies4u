@@ -1,3 +1,3 @@
-package com.zotikos.m4u.model
+package com.zotikos.m4u.data.model
 
 data class Post(val userId: Int, val id: Int, val title: String, val body: String)

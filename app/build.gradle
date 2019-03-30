@@ -21,6 +21,10 @@ android {
         enabled = true
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     buildTypes {
         debug {
             buildConfigField 'String', "API_KEY", "\"\""
@@ -68,6 +72,9 @@ dependencies {
     //Gson
     implementation "com.google.code.gson:gson:$gson_version"
 
+    //moshi
+    implementation "com.squareup.moshi:moshi-kotlin:${moshi_kotlin_version}"
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version") {
         // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
@@ -97,7 +104,10 @@ dependencies {
     //Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    testImplementation 'junit:junit:4.12'
+
+
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"

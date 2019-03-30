@@ -4,23 +4,26 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.zotikos.m4u.data.repository.PostRepository
 import com.zotikos.m4u.ui.base.BaseViewModel
+import com.zotikos.m4u.ui.vo.PostUIDto
 import com.zotikos.m4u.util.SchedulerProvider
 import io.reactivex.disposables.Disposable
 
 class PostDetailsViewModel(
-     val repository: PostRepository,
-     val schedulerProvider: SchedulerProvider
+    val repository: PostRepository,
+    val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
     private lateinit var subscription: Disposable
 
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+
+    var postItem: PostUIDto? = null
 
     init {
-        loadPosts()
+        loadPostDetails()
     }
 
-    private fun loadPosts() {
+    private fun loadPostDetails() {
         subscription = repository.getPosts()
             .compose(schedulerProvider.getSchedulersForObservable())
             .doOnSubscribe { onRetrievePostListStart() }

@@ -1,18 +1,36 @@
-package com.zotikos.m4u.util
+package com.zotikos.m4u.util.databinding
 
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.zotikos.m4u.util.extension.getParentActivity
+import timber.log.Timber
 
-object DatabindingUtils {
+object DataBindingUtils {
 
-    @BindingAdapter("mutableVisibility")
-    fun setMutableVisibility(view: View, visibility: MutableLiveData<Int>?) {
+    @JvmStatic
+    @BindingAdapter("showOrHide")
+    fun setVisibility(view: View, visibility: Boolean) {
+        Timber.d("visibility = $visibility")
+        view.visibility = if (visibility) View.VISIBLE else View.INVISIBLE
+    }
+
+    @JvmStatic
+    @BindingAdapter("mutableText")
+    fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
         val parentActivity: AppCompatActivity? = view.getParentActivity()
-        if (parentActivity != null && visibility != null) {
-            visibility.observe(parentActivity, Observer { value -> view.visibility = value ?: View.VISIBLE })
+        if (parentActivity != null && text != null) {
+            text.observe(parentActivity, Observer { value -> view.text = value ?: "" })
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("adapter")
+    fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+        view.adapter = adapter
     }
 }

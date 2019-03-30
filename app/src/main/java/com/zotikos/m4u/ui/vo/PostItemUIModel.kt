@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.dto
+package com.zotikos.m4u.ui.vo
 
 import androidx.lifecycle.MutableLiveData
 
