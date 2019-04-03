@@ -2,10 +2,8 @@ package com.zotikos.m4u.data.repository
 
 import com.zotikos.m4u.base.BaseMockServerTest
 import com.zotikos.m4u.data.model.post.Post
-import com.zotikos.m4u.util.SchedulerProvider
 import com.zotikos.m4u.util.TestUtils
 import io.reactivex.observers.TestObserver
-import io.reactivex.schedulers.Schedulers
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -14,10 +12,10 @@ import java.util.concurrent.TimeUnit
 class PostRepositoryMockWebServerTest : BaseMockServerTest() {
 
 
-    private val schedulerProvider = SchedulerProvider(
-        Schedulers.trampoline(),
-        Schedulers.trampoline()
-    )
+    /* private val schedulerProvider = SchedulerProvider(
+         Schedulers.trampoline(),
+         Schedulers.trampoline()
+     )*/
 
     @Test
     fun should_return_posts_when_api_success() {
@@ -36,7 +34,7 @@ class PostRepositoryMockWebServerTest : BaseMockServerTest() {
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
 
         postRepository.getPosts()
-            .compose(schedulerProvider.getSchedulersForSingle())
+            //.compose(schedulerProvider.getSchedulersForSingle())
             .subscribe(testObserver)
 
         testObserver.assertNoErrors()
@@ -65,7 +63,7 @@ class PostRepositoryMockWebServerTest : BaseMockServerTest() {
 
         // Call the API
         postRepository.getPosts()
-            .compose(schedulerProvider.getSchedulersForSingle())
+            //.compose(schedulerProvider.getSchedulersForSingle())
             .subscribe(testObserver)
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
 
@@ -91,7 +89,7 @@ class PostRepositoryMockWebServerTest : BaseMockServerTest() {
         // Mock a response with status 200 and sample JSON output
         val mockResponse = MockResponse()
             .setResponseCode(200)
-            .throttleBody(1024, 1, TimeUnit.SECONDS) // Simulate SocketTimeout
+            .throttleBody(104, 1, TimeUnit.SECONDS) // Simulate SocketTimeout
             .setBody(TestUtils.readJsonFile("json/post_response.json"))
 
         // Enqueue request
@@ -99,7 +97,7 @@ class PostRepositoryMockWebServerTest : BaseMockServerTest() {
 
         // Call the API
         postRepository.getPosts()
-            .compose(schedulerProvider.getSchedulersForSingle())
+            // .compose(schedulerProvider.getSchedulersForSingle())
             .subscribe(testObserver)
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS)
 

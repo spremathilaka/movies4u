@@ -58,6 +58,10 @@ https://android.jlelse.eu/yet-another-awesome-kotlin-feature-parcelize-5439718ba
 -------------------------
 https://medium.com/@bherbst/managing-the-fragment-back-stack-373e87e4ff62
 
+Testing in Android with Espresso - Part 1 (Setup and Basics)
+https://www.pluralsight.com/guides/testing-in-android-with-espresso-part-1
+https://www.pluralsight.com/guides/testing-in-android-with-espresso-part-2
+
 Android Test tricks - Sharing code between UI & unit tests
 https://trickyandroid.com/android-test-tricks-sharing-code-between-unit-ui-tests/
 
