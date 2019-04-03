@@ -18,7 +18,6 @@ import com.zotikos.m4u.databinding.FragmentPostListBinding
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
 import com.zotikos.m4u.ui.vo.PostUIDto
-import com.zotikos.m4u.ui.vo.Status
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
@@ -63,18 +62,17 @@ class PostListFragment : BaseFragment() {
            })
    */
 
-        viewModel.getPosts().observe(this, Observer { postList ->
-            when (postList.status) {
-                Status.LOADING -> showHideLoadingIndicator(true)
-                Status.SUCCESS -> {
-                    postListAdapter.updatePostList(postList.data ?: mutableListOf())
-                    showHideLoadingIndicator(false)
-                }
+        viewModel.getPosts().observe(this, Observer { event ->
+            val action: PostsListAction? = event?.getContentIfNotHandled()
 
-                Status.ERROR -> showHideLoadingIndicator(false)
+            when (action) {
+                is PostsListAction.PostsLoadingSuccess -> {
+                    postListAdapter.updatePostList(action.posts)
+                }
             }
         })
 
+        subscribeCommonAction(viewModel.commonViewActionEvent/*, viewModel.loadingIndicator*/)
     }
 
     private fun showHideLoadingIndicator(show: Boolean) {
@@ -107,7 +105,7 @@ class PostListFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         Timber.d("<--- onAttach--->")
-        //with out this error : lateinit property viewModelFactory has not been initialized
+        //with out this error : late init property viewModelFactory has not been initialized
         AndroidSupportInjection.inject(this)
         if (context is PostListFragment.OnFragmentInteractionListener) {
             listener = context

@@ -9,8 +9,8 @@ import com.zotikos.m4u.util.SchedulerProvider
 import io.reactivex.disposables.Disposable
 
 class PostDetailsViewModel(
-    val repository: PostRepository,
-    val schedulerProvider: SchedulerProvider
+    private val repository: PostRepository,
+    private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
     private lateinit var subscription: Disposable
@@ -25,25 +25,25 @@ class PostDetailsViewModel(
 
     private fun loadPostDetails() {
         subscription = repository.getPosts()
-            .compose(schedulerProvider.getSchedulersForObservable())
-            .doOnSubscribe { onRetrievePostListStart() }
-            .doOnTerminate { onRetrievePostListFinish() }
+            .compose(schedulerProvider.getSchedulersForSingle())
+            .doOnSubscribe { onRetrievePostDetailsStart() }
+            .doFinally { onRetrievePostDetailsFinish() }
             .subscribe(
-                { onRetrievePostListSuccess() },
+                { onRetrievePostDetailsSuccess() },
                 { onRetrievePostListError() }
             )
     }
 
 
-    private fun onRetrievePostListStart() {
+    private fun onRetrievePostDetailsStart() {
         loadingVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrievePostListFinish() {
+    private fun onRetrievePostDetailsFinish() {
         loadingVisibility.value = View.GONE
     }
 
-    private fun onRetrievePostListSuccess() {
+    private fun onRetrievePostDetailsSuccess() {
 
     }
 

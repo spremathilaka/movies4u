@@ -58,6 +58,18 @@ https://android.jlelse.eu/yet-another-awesome-kotlin-feature-parcelize-5439718ba
 -------------------------
 https://medium.com/@bherbst/managing-the-fragment-back-stack-373e87e4ff62
 
+Android Test tricks - Sharing code between UI & unit tests
+https://trickyandroid.com/android-test-tricks-sharing-code-between-unit-ui-tests/
+
 Android Architecture Components: Testing your ViewModel LiveData
 https://medium.com/exploring-android/android-architecture-components-testing-your-viewmodel-livedata-70177af89c6e
+
+Instrumentation testing with MockWebServer and Dagger2
+https://medium.com/mindorks/instrumentation-testing-with-mockwebserver-and-dagger2-56778477f0cf
+
+Writing UI tests with Dagger Android and MockWebServer
+https://medium.com/@jurajkunier/writing-ui-tests-with-dagger-android-and-mockwebserver-aed9564e89b3
+
+Unit Test API Calls With MockWebServer
+https://android.jlelse.eu/unit-test-api-calls-with-mockwebserver-d4fab11de847
 

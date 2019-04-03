@@ -1,4 +1,5 @@
 package com.zotikos.m4u
 
-const val BASE_URL: String = "https://jsonplaceholder.typicode.com"
+
 const val API_KEY: String = ""
+const val REQUEST_API_GET_POSTS = 1

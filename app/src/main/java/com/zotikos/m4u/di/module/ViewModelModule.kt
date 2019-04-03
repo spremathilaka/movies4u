@@ -15,7 +15,7 @@ import javax.inject.Provider
 class ViewModelModule {
 
 
-    //error: A @Module may not contain both non-static @Provides methods and abstract @Binds or @Multibinds declarations
+    //error: A @Module may not contain both non-static @Provides methods and abstract @Binds or @Multi binds declarations
     // @Binds
     // abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 

@@ -1,18 +1,28 @@
 package com.zotikos.m4u.ui.base
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.zotikos.m4u.ui.vo.Event
+import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseViewModel : ViewModel() {
+open class BaseViewModel : ViewModel() {
+    protected val compositeDisposable = CompositeDisposable()
+    val commonViewActionEvent = MutableLiveData<Event<CommonViewAction>>()
 
+    val showLoadingIndicator = MutableLiveData<Boolean>().apply { postValue(false) }
+    val loadingIndicator: LiveData<Boolean>
+        get() = showLoadingIndicator
 
-    init {
-        inject()
+    override fun onCleared() {
+        compositeDisposable.clear()
     }
 
-    /**
-     * Injects the required dependencies
-     */
-    private fun inject() {
+    fun showLoadingIndicator() {
+        showLoadingIndicator.postValue(true)
+    }
 
+    fun hideLoadingIndicator() {
+        showLoadingIndicator.postValue(false)
     }
 }

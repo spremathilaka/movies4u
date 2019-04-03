@@ -1,7 +1,7 @@
 package com.zotikos.m4u.ui.vo
 
 import android.os.Parcelable
-import com.zotikos.m4u.data.model.Post
+import com.zotikos.m4u.data.model.post.Post
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

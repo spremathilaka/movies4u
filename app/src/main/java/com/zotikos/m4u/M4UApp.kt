@@ -9,16 +9,11 @@ import dagger.android.HasActivityInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class M4UApp : Application(), HasActivityInjector
-//, HasSupportFragmentInjector
-{
+open class M4UApp : Application(), HasActivityInjector {
 
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
-
-    /* @Inject
-     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>*/
 
     override fun onCreate() {
         super.onCreate()
@@ -27,13 +22,17 @@ class M4UApp : Application(), HasActivityInjector
             Timber.plant(Timber.DebugTree())
         }
 
+        initDaggerAppComponent()
+    }
+
+
+    open fun initDaggerAppComponent() {
         DaggerAppComponent.builder()
             .application(this)
             .build()
             .inject(this)
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 
-    //   override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+    override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 }
