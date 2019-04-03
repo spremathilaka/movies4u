@@ -14,7 +14,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.zotikos.m4u.util.MockRunner"
     }
 
     dataBinding {
@@ -28,13 +29,34 @@ android {
     buildTypes {
         debug {
             buildConfigField 'String', "API_KEY", "\"\""
+            buildConfigField("long", "NETWORK_DELAY", "0")
         }
 
         release {
             buildConfigField 'String', "API_KEY", "\"\""
+            buildConfigField("long", "NETWORK_DELAY", "0")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    sourceSets {
+        String sharedTestJavaDir = 'src/sharedTest/java'
+
+        test {
+            java.srcDirs += [sharedTestJavaDir]
+            resources.srcDirs += ['src/sharedTest/resources']
+        }
+
+        androidTest {
+            java.srcDirs += [sharedTestJavaDir]
+            resources.srcDirs += ['src/sharedTest/resources']
+        }
+       // main { java.srcDirs = ['src/main/java', 'src/sharedTest/java/'] }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -73,7 +95,9 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
 
     //moshi
-    implementation "com.squareup.moshi:moshi-kotlin:${moshi_kotlin_version}"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    //kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshi_kotlin_version}"
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version") {
@@ -82,7 +106,7 @@ dependencies {
     }
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okio:okio:$okio_version"
@@ -106,14 +130,27 @@ dependencies {
 
 
 
+    //Unit testing
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger2_version"
+    kaptTest "com.google.dagger:dagger-android-processor: $dagger2_version"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mock_webserver_version"
 
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+
+    //UI Testing
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation "androidx.test:rules:$test_rule_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger2_version"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor: $dagger2_version"
+
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mock_webserver_version"
+
 }
 
 //increase the number of errors that javac will print.

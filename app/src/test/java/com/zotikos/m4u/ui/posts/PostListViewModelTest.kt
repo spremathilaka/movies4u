@@ -2,23 +2,23 @@ package com.zotikos.m4u.ui.posts
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.zotikos.m4u.data.model.Post
 import com.zotikos.m4u.data.repository.PostRepository
-import com.zotikos.m4u.ui.vo.PostUIDto
-import com.zotikos.m4u.ui.vo.Resource
-import com.zotikos.m4u.ui.vo.Status
+import com.zotikos.m4u.ui.base.CommonViewAction
+import com.zotikos.m4u.ui.vo.Event
 import com.zotikos.m4u.util.SchedulerProvider
-import io.reactivex.Observable
+import com.zotikos.m4u.util.getDummyPostList
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import junit.framework.Assert.assertEquals
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import java.io.IOException
 
 class PostListViewModelTest {
 
@@ -38,7 +38,7 @@ class PostListViewModelTest {
     //LiveData will emit values is if it has an observer.
     // But we want to run our tests without creating an Activity or Fragment.
     @Mock
-    lateinit var observer: Observer<Resource<List<PostUIDto>>>
+    lateinit var observer: Observer<Event<PostsListAction>>
 
     private val schedulerProvider = SchedulerProvider(
         Schedulers.trampoline(),
@@ -56,50 +56,37 @@ class PostListViewModelTest {
 
 
     @Test
-    fun should_call_loading_when_api_call_trigger() {
-
-
+    fun should_call_success_event_when_api_call_success() {
+        //If our live data does not have an observer, then onChanged events will not be emitted
         postListViewModel.getPosts().observeForever(observer)
 
         Mockito.`when`(mockRepository.getPosts())
-            .thenReturn(Observable.just(getDummyPostList()))
+            .thenReturn(Single.just(getDummyPostList()))
 
         postListViewModel.loadPosts()
 
-        verify(observer).onChanged(Resource.loading(mutableListOf()))
+        val actual = postListViewModel.getPosts().value?.getContentIfNotHandled()
 
-
-    }
-
-    @Test
-    fun should_callSucess_event_when_api_call_success() {
-        //If our livedata doesn’t have an observer, then onChanged events will not be emitted
-        postListViewModel.getPosts().observeForever(observer)
-
-        Mockito.`when`(mockRepository.getPosts())
-            .thenReturn(Observable.just(getDummyPostList()))
-
-        postListViewModel.loadPosts()
-
-        assert(postListViewModel.getPosts().value?.status == Status.SUCCESS)
-        assertEquals(1, postListViewModel.getPosts().value?.data?.size)
+        Assert.assertTrue(actual is PostsListAction.PostsLoadingSuccess)
+        assertEquals(3, (actual as PostsListAction.PostsLoadingSuccess).posts.size)
     }
 
 
     @Test
     fun should_callFailed_event_when_api_call_failed() {
-        //If our livedata doesn’t have an observer, then onChanged events will not be emitted
+        //If our live data does not have an observer, then onChanged events will not be emitted
         postListViewModel.getPosts().observeForever(observer)
 
         Mockito.`when`(mockRepository.getPosts())
-            .thenReturn(Observable.error(Exception("")))
+            .thenReturn(Single.error(IOException("")))
 
         postListViewModel.loadPosts()
 
-        assert(postListViewModel.getPosts().value?.status == Status.ERROR)
-        assertEquals(0, postListViewModel.getPosts().value?.data?.size)
+        assert(
+            postListViewModel.commonViewActionEvent.value?.getContentIfNotHandled()
+                    is CommonViewAction.NonApplicationError
+        )
+        // assertEquals(0, (actual as PostsListAction.PostsLoadingSuccess).posts.size)
     }
 
-    private fun getDummyPostList(): List<Post> =
-        mutableListOf(Post(1, 2, "Check unit Test", "Process finished with exit code 0"))
 }
