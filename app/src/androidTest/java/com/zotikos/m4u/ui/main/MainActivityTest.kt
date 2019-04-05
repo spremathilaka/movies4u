@@ -12,6 +12,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.zotikos.m4u.R
 import com.zotikos.m4u.UiTestApp
+import com.zotikos.m4u.di.component.DaggerUITestAppComponent
 import com.zotikos.m4u.util.CustomMatchers.Companion.withItemCount
 import com.zotikos.m4u.util.MockServerDispatcher
 import okhttp3.mockwebserver.MockWebServer

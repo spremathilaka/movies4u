@@ -1,5 +1,7 @@
 package com.zotikos.m4u
 
+import com.zotikos.m4u.di.component.DaggerUITestAppComponent
+
 
 class UiTestApp : M4UApp() {
 

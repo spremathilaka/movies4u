@@ -41,6 +41,8 @@ https://code.luasoftware.com/tutorials/android/dagger2-injection-for-fragment/
 
 https://android.jlelse.eu/dagger-2-part-i-basic-principles-graph-dependencies-scopes-3dfd032ccd82
 
+https://www.techyourchance.com/dependency-injection-viewmodel-with-dagger-2/
+
 -------------------------------------------------
 Hiding API keys from your Android repository
 https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
