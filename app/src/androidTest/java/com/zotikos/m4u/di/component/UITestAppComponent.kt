@@ -7,8 +7,8 @@ import com.zotikos.m4u.data.remote.ApiService
 import com.zotikos.m4u.di.module.ActivityBuilderModule
 import com.zotikos.m4u.di.module.AppModule
 import com.zotikos.m4u.di.module.ContextModule
-import com.zotikos.m4u.di.module.NetworkModule
 import com.zotikos.m4u.di.module.ViewModelModule
+import com.zotikos.m4u.util.di.module.MockNetworkModule
 import com.zotikos.m4u.util.di.module.MockUrlModule
 import dagger.BindsInstance
 import dagger.Component
@@ -23,7 +23,7 @@ import javax.inject.Singleton
         ContextModule::class,
         AppModule::class,
         MockUrlModule::class,
-        NetworkModule::class,
+        MockNetworkModule::class,
         ViewModelModule::class,
         ActivityBuilderModule::class
     ]

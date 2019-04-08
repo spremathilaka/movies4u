@@ -1,14 +1,12 @@
 package com.zotikos.m4u
 
-import com.zotikos.m4u.di.component.DaggerUITestAppComponent
-
 
 class UiTestApp : M4UApp() {
 
     override fun initDaggerAppComponent() {
-        DaggerUITestAppComponent.builder()
-            .application(this)
-            .build()
-            .inject(this)
+        /* DaggerUITestAppComponent.builder()
+             .application(this)
+             .build()
+             .inject(this)*/
     }
 }

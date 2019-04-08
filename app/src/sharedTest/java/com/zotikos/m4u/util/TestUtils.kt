@@ -1,6 +1,12 @@
 package com.zotikos.m4u.util
 
+import androidx.annotation.StringRes
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
+import com.google.android.material.R
 import com.google.gson.Gson
+import org.hamcrest.Matchers
 
 import java.io.BufferedReader
 import java.io.IOException
@@ -30,5 +36,16 @@ object TestUtils {
             null
         }
 
+    }
+
+    fun checkSnackBarDisplayedByMessage(@StringRes message: Int) {
+        Espresso.onView(Matchers.allOf(ViewMatchers.withId(R.id.snackbar_text), ViewMatchers.withText(message)))
+            .check(
+                ViewAssertions.matches(
+                    ViewMatchers.withEffectiveVisibility(
+                        ViewMatchers.Visibility.VISIBLE
+                    )
+                )
+            )
     }
 }

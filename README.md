@@ -79,3 +79,8 @@ https://medium.com/@jurajkunier/writing-ui-tests-with-dagger-android-and-mockweb
 Unit Test API Calls With MockWebServer
 https://android.jlelse.eu/unit-test-api-calls-with-mockwebserver-d4fab11de847
 
+How to be a Mock-Star
+https://medium.com/fueled-engineering/how-to-be-a-mock-star-fc00714d8c2f
+
+Dagger 2 on Android: The Official Guidelines You Should Be Following
+https://proandroiddev.com/dagger-2-on-android-the-official-guidelines-you-should-be-following-2607fd6c002e

@@ -56,10 +56,14 @@ ext {
     mockito_version='2.11.0'
 
     //integration test
+    test_core_version='1.1.0'
     mock_webserver_version='3.12.0'
     test_runner_version='1.1.2-alpha02'
     test_rule_version='1.1.2-alpha02'
+
     espresso_core_version='3.2.0-alpha02'
+    espresso_intents_version='3.2.0-alpha02'
+    espresso_contrib_version='3.2.0-alpha02'
 }
 
 task clean(type: Delete) {

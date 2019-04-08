@@ -8,11 +8,13 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.zotikos.m4u.R
 import com.zotikos.m4u.data.model.error.ApiErrorResponse
 import com.zotikos.m4u.ui.vo.Event
 import com.zotikos.m4u.util.exceptions.ErrorHandlingDelegate
 import com.zotikos.m4u.util.extension.showAlert
+import kotlinx.android.synthetic.main.fragment_post_list.*
 
 
 abstract class BaseFragment : Fragment() {
@@ -82,7 +84,8 @@ abstract class BaseFragment : Fragment() {
     // Handles the network connection errors.
 
     open fun showNetworkError(listenerAction: () -> Unit) {
-        showError(getString(R.string.no_network)) { listenerAction() }
+        //  showError(getString(R.string.no_network)) { listenerAction() }
+        Snackbar.make(coordinatorLayout, getString(R.string.no_network), Snackbar.LENGTH_LONG).show()
     }
 
     open fun showError(listenerAction: () -> Unit) {

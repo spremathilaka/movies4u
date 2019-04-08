@@ -14,6 +14,7 @@ class MockUrlModule {
     @Singleton
     fun provideMockServer(): MockWebServer {
 
+        // need to avoid starting your MockWebServer on the main thread.
         var mockWebServer: MockWebServer? = null
 
         val thread = Thread(Runnable {

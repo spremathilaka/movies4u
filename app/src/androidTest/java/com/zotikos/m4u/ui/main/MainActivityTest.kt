@@ -4,17 +4,20 @@ package com.zotikos.m4u.ui.main
 import android.content.Intent
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import com.zotikos.m4u.R
 import com.zotikos.m4u.UiTestApp
 import com.zotikos.m4u.di.component.DaggerUITestAppComponent
+import com.zotikos.m4u.ui.posts.PostListAdapter
 import com.zotikos.m4u.util.CustomMatchers.Companion.withItemCount
 import com.zotikos.m4u.util.MockServerDispatcher
+import com.zotikos.m4u.util.TestUtils.checkSnackBarDisplayedByMessage
+import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -22,6 +25,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -29,7 +33,6 @@ class MainActivityTest {
 
     @get:Rule
     val activityRule = ActivityTestRule(MainActivity::class.java, true, false)
-
 
     lateinit var mockWebServer: MockWebServer
 
@@ -49,33 +52,59 @@ class MainActivityTest {
 
         mockWebServer = appInjector.getMockWebServer()
 
-
-        val intent = Intent(
-            InstrumentationRegistry.getInstrumentation()
-                .targetContext, MainActivity::class.java
-        )
-        mockWebServer.setDispatcher(MockServerDispatcher().RequestDispatcher())
-        activityRule.launchActivity(intent)
     }
 
 
     @Test
     fun testHappyCondition() {
-
+        mockWebServer.setDispatcher(MockServerDispatcher().RequestDispatcher())
+        launchActivity()
         Espresso.onView(withId(com.zotikos.m4u.R.id.progressBar)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.postList)).check(matches(withItemCount(3)))
-        Espresso.onView(withId(R.id.postList)).check(matches(isDisplayed()))
+        onView(withId(com.zotikos.m4u.R.id.postList)).check(matches(withItemCount(3)))
+        Espresso.onView(withId(com.zotikos.m4u.R.id.postList)).check(matches(isDisplayed()))
 
     }
 
-/*    @Test
-    fun recycleView_shouldHandleMalformedResponse() {
+    private fun launchActivity() {
+        val intent = Intent(
+            InstrumentationRegistry.getInstrumentation()
+                .targetContext, MainActivity::class.java
+        )
+        activityRule.launchActivity(intent)
+    }
+
+    @Test
+    fun should_show_unhandled_error_pop_up_for_api_error_response() {
         mockWebServer.enqueue(MockResponse().setResponseCode(500).setBody("Error"))
-        onView(withId(R.id.searchView)).perform(typeSearchViewText("test"))
-        SystemClock.sleep(1000)
-        onView(allOf(withId(R.id.snackbar_text), withText(app.getString(R.string.network_connection_error))))
-            .check(matches(isDisplayed()))
-    }*/
+        launchActivity()
+        onView(withText(app.getString(com.zotikos.m4u.R.string.error_unhandled))).check(matches(isDisplayed()))
+    }
+
+
+    @Test
+    fun should_show_detail_view_when_click_on_item() {
+        mockWebServer.setDispatcher(MockServerDispatcher().RequestDispatcher())
+        launchActivity()
+        onView(withId(com.zotikos.m4u.R.id.postList))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<PostListAdapter.ViewHolder>(0, click())
+            )
+        onView(withText("sunt aut facere repellat provident occaecati excepturi optio reprehenderit")).check(
+            matches(
+                isDisplayed()
+            )
+        )
+    }
+
+    @Test
+    fun should_show_snack_bar_message_when_no_internet() {
+        val response = MockResponse()
+        response.setBody("\"message\":\"Error\"").throttleBody(1, 2, TimeUnit.SECONDS)
+
+        mockWebServer.enqueue(response)
+        launchActivity()
+        checkSnackBarDisplayedByMessage(com.zotikos.m4u.R.string.no_network)
+    }
 
     @After
     @Throws(Exception::class)

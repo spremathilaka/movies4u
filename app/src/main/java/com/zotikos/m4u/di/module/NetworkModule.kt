@@ -35,14 +35,14 @@ import javax.inject.Singleton
 // Safe here as we are dealing with a Dagger 2 module
 @Suppress("unused")
 
-private const val READ_TIMEOUT = 30.toLong()
-private const val CONNECT_TIMEOUT = 30.toLong()
-private const val WRITE_TIMEOUT = 30.toLong()
-private const val CACHE_SIZE = 10 * 1024 * 1024.toLong() // 5 MB
 
 @Module
-class NetworkModule {
+open class NetworkModule {
 
+
+    open val READ_TIMEOUT = 30.toLong()
+    open val CONNECT_TIMEOUT = 30.toLong()
+    open val WRITE_TIMEOUT = 30.toLong()
 
     companion object {
         private val TAG = NetworkModule::class.simpleName
@@ -50,6 +50,7 @@ class NetworkModule {
         private const val OFFLINE_INTERCEPTOR = "offlineInterceptor"
         private const val DELAY_INTERCEPTOR = "delayInterceptor"
         private const val BASE_URL = "baseUrl"
+        private val CACHE_SIZE = 10 * 1024 * 1024.toLong() // 5 MB
     }
 
     @Provides
