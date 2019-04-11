@@ -84,3 +84,13 @@ https://medium.com/fueled-engineering/how-to-be-a-mock-star-fc00714d8c2f
 
 Dagger 2 on Android: The Official Guidelines You Should Be Following
 https://proandroiddev.com/dagger-2-on-android-the-official-guidelines-you-should-be-following-2607fd6c002e
+
+Integrate Espresso Idling Resources in your app to build flexible UI tests
+https://android.jlelse.eu/integrate-espresso-idling-resources-in-your-app-to-build-flexible-ui-tests-c779e24f5057
+https://www.philosophicalhacker.com/post/psa-dont-use-esprsso-idling-resources-like-this/
+http://myhexaville.com/2018/01/22/android-espresso-idling-resouces-firebase/
+https://codelabs.developers.google.com/codelabs/android-testing/index.html?index=..%2F..%2Findex#0
+https://medium.com/azimolabs/automated-testing-will-set-your-engineering-team-free-a89467c40731
+
+https://medium.com/insiden26/okhttp-idling-resource-for-espresso-462ef2417049
+https://wajahatkarim.com/2018/06/idling-registry-for-okhttp/

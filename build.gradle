@@ -64,6 +64,7 @@ ext {
     espresso_core_version='3.2.0-alpha02'
     espresso_intents_version='3.2.0-alpha02'
     espresso_contrib_version='3.2.0-alpha02'
+    espresso_idling_resources_version='3.2.0-alpha02'
 }
 
 task clean(type: Delete) {

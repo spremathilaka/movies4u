@@ -128,7 +128,7 @@ dependencies {
     //Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_idling_resources_version"
 
     //Unit testing
     testImplementation "junit:junit:$junit_version"
@@ -153,11 +153,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_contrib_version"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_intents_version"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espresso_idling_resources_version"
 
     kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger2_version"
     kaptAndroidTest "com.google.dagger:dagger-android-processor: $dagger2_version"
 
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mock_webserver_version"
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+
 
 }
 

@@ -27,7 +27,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 
-
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
@@ -37,6 +36,8 @@ class MainActivityTest {
     lateinit var mockWebServer: MockWebServer
 
     private lateinit var app: UiTestApp
+
+    // private var mIdlingResource: IdlingResource? = null
 
     @Before
     @Throws(Exception::class)
@@ -52,12 +53,26 @@ class MainActivityTest {
 
         mockWebServer = appInjector.getMockWebServer()
 
+
     }
+
+
+    /* @Before
+     fun registerIdlingResource() {
+         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+         activityScenario.onActivity { activity ->
+             mIdlingResource = activity.getIdlingResource()
+             // To prove that the test fails, omit this call:
+             IdlingRegistry.getInstance().register(mIdlingResource)
+         }
+     }*/
 
 
     @Test
     fun testHappyCondition() {
         mockWebServer.setDispatcher(MockServerDispatcher().RequestDispatcher())
+
+
         launchActivity()
         Espresso.onView(withId(com.zotikos.m4u.R.id.progressBar)).check(matches(not(isDisplayed())))
         onView(withId(com.zotikos.m4u.R.id.postList)).check(matches(withItemCount(3)))
@@ -71,6 +86,7 @@ class MainActivityTest {
                 .targetContext, MainActivity::class.java
         )
         activityRule.launchActivity(intent)
+        // ActivityScenario.launch(MainActivity::class.java)
     }
 
     @Test
@@ -111,4 +127,13 @@ class MainActivityTest {
     fun tearDown() {
         mockWebServer.shutdown()
     }
+
+
+    /*  // Unregister your Idling Resource so it can be garbage collected and does not leak any memory
+      @After
+      fun unregisterIdlingResource() {
+          if (mIdlingResource != null) {
+              IdlingRegistry.getInstance().unregister(mIdlingResource)
+          }
+      }*/
 }

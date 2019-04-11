@@ -1,7 +1,9 @@
 package com.zotikos.m4u.ui.posts
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.test.espresso.idling.CountingIdlingResource
 import com.zotikos.m4u.REQUEST_API_GET_POSTS
 import com.zotikos.m4u.data.repository.PostRepository
 import com.zotikos.m4u.ui.base.ApiSingleDisposableObserver
@@ -22,14 +24,23 @@ class PostListViewModel(
 
     private val _dataList = MutableLiveData<Event<PostsListAction>>()
 
+    var mIdlingRes = CountingIdlingResource("PostList")
+
 
     fun loadPosts() {
+
         disposable.add(repository.getPosts()
             .compose(schedulerProvider.getSchedulersForSingle()).map { postList ->
                 postList.map { PostUIDto(it) }
             }
-            .doOnSubscribe { showLoadingIndicator() }
-            .doFinally { hideLoadingIndicator() }
+            .doOnSubscribe {
+                showLoadingIndicator()
+                mIdlingRes.increment()
+            }
+            .doFinally {
+                hideLoadingIndicator()
+                mIdlingRes.decrement()
+            }
             .subscribeWith(GetPostsSingle()))
     }
 
@@ -54,5 +65,10 @@ class PostListViewModel(
         disposable.clear()
         disposable.dispose()
         super.onCleared()
+    }
+
+    @VisibleForTesting
+    fun getIdlingResourceInTest(): CountingIdlingResource {
+        return mIdlingRes
     }
 }
