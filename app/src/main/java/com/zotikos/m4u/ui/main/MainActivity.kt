@@ -2,13 +2,15 @@ package com.zotikos.m4u.ui.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.transaction
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import com.zotikos.m4u.R
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseActivity
 import com.zotikos.m4u.ui.detail.PostDetailFragment
 import com.zotikos.m4u.ui.posts.PostListFragment
+import com.zotikos.m4u.ui.posts.PostListFragmentDirections
 import com.zotikos.m4u.ui.vo.PostUIDto
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -33,8 +35,9 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector,
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         activityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        loadNextView(PostListFragment.newInstance(), PostListFragment.FRAGMENT_TAG)
+        setupNavigation()
     }
+
 
     override fun layoutRes(): Int = R.layout.activity_main
 
@@ -42,16 +45,19 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector,
         return androidInjector
     }
 
-    private fun loadNextView(fragment: Fragment, fragmentTag: String, addToBackStack: Boolean = true) {
-        supportFragmentManager.transaction(allowStateLoss = true) {
-            replace(R.id.content_frame, fragment, fragmentTag)
-            if (addToBackStack) {
-                addToBackStack(fragmentTag)
-            }
-        }
+    private fun setupNavigation() {
+        val navController = Navigation.findNavController(this, R.id.nav_fragment)
+        setupActionBarWithNavController(this, navController)
+        //bottomNavigationView.setupWithNavController(navController)
     }
 
     override fun showPostDetail(post: PostUIDto) {
-        loadNextView(PostDetailFragment.newInstance(post), PostDetailFragment.FRAGMENT_TAG, addToBackStack = false)
+
+        val action = PostListFragmentDirections.openNotificationDetails(post)
+        val navController = Navigation.findNavController(this, R.id.nav_fragment)
+        navController.navigate(action)
     }
+
+    override fun onSupportNavigateUp() =
+        Navigation.findNavController(this, R.id.nav_fragment).navigateUp()
 }

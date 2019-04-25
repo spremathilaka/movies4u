@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.zotikos.m4u.R
@@ -37,9 +36,9 @@ class PostDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            selectedPostItem = it.getParcelable(ARG_POST_ITEM)
-        }
+
+        selectedPostItem = arguments?.let { PostDetailFragmentArgs.fromBundle(it).postDetails }
+
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(PostDetailsViewModel::class.java).also {
                 it.postItem = selectedPostItem
@@ -90,10 +89,8 @@ class PostDetailFragment : BaseFragment() {
         const val FRAGMENT_TAG = "PostDetailFragment"
 
         @JvmStatic
-        fun newInstance(post: PostUIDto) =
-            PostDetailFragment().apply {
-                arguments = bundleOf(ARG_POST_ITEM to post)
-            }
+        fun newInstance() =
+            PostDetailFragment()
     }
 
     override fun layoutRes(): Int = R.layout.fragment_post_detail

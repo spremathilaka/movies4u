@@ -43,6 +43,8 @@ https://android.jlelse.eu/dagger-2-part-i-basic-principles-graph-dependencies-sc
 
 https://www.techyourchance.com/dependency-injection-viewmodel-with-dagger-2/
 
+Android testing using Dagger 2, Mockito and a custom JUnit rul
+https://medium.com/@fabioCollini/android-testing-using-dagger-2-mockito-and-a-custom-junit-rule-c8487ed01b56
 -------------------------------------------------
 Hiding API keys from your Android repository
 https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
@@ -87,10 +89,38 @@ https://proandroiddev.com/dagger-2-on-android-the-official-guidelines-you-should
 
 Integrate Espresso Idling Resources in your app to build flexible UI tests
 https://android.jlelse.eu/integrate-espresso-idling-resources-in-your-app-to-build-flexible-ui-tests-c779e24f5057
+        
+PSA: Dont Use Espresso Idling Resources like Google does
 https://www.philosophicalhacker.com/post/psa-dont-use-esprsso-idling-resources-like-this/
+
+Android Testing pt 3.2 | Espresso Idling Resources With Firebase
 http://myhexaville.com/2018/01/22/android-espresso-idling-resouces-firebase/
+
 https://codelabs.developers.google.com/codelabs/android-testing/index.html?index=..%2F..%2Findex#0
+
+Automated testing will set your engineering team free
 https://medium.com/azimolabs/automated-testing-will-set-your-engineering-team-free-a89467c40731
 
+OkHttp Idling Resource for Espresso
 https://medium.com/insiden26/okhttp-idling-resource-for-espresso-462ef2417049
+
+Idling Registry for OkHttp
 https://wajahatkarim.com/2018/06/idling-registry-for-okhttp/
+
+Efficient Android Testing Using WireMock And Espresso
+https://medium.com/mindorks/efficient-android-testing-using-wiremock-and-espresso-cf2d7b7c735f
+
+UI Testing on Android with Dagger, Espresso and Mockito
+https://medium.com/appunite-edu-collection/ui-testing-on-android-with-dagger-espresso-and-mockito-12d37e5f613d
+-------------------------
+The New Android In-App Navigation
+https://medium.com/@vepetruskova/the-new-android-in-app-navigation-f7bfbe925b9
+
+Android Navigation Arch Component — A Curious Investigation
+https://proandroiddev.com/android-navigation-arch-component-a-curious-investigation-3e56e24126e1
+
+A problem like Navigation — Part 1
+https://medium.com/a-problem-like-maria/a-problem-like-navigation-e9821625a70e
+https://medium.com/a-problem-like-maria/a-problem-like-navigation-part-2-63e46a565d4b
+
+https://medium.com/@Alex.v/android-navigation-architecture-component-25b5a7aab8aa
