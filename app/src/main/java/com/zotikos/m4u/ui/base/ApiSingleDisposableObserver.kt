@@ -18,7 +18,8 @@ import java.security.cert.CertPathValidatorException
 abstract class ApiSingleDisposableObserver<T>(
     private val requestId: Int,
     private val liveEvent: MutableLiveData<Event<CommonViewAction>>? = null,
-    private val showLoadingIndicator: MutableLiveData<Boolean>? = null
+    private val showLoadingIndicator: MutableLiveData<Boolean>? = null,
+    private val retryAction: () -> Unit
 ) : DisposableSingleObserver<T>() {
 
     override fun onError(e: Throwable) {
@@ -61,10 +62,15 @@ abstract class ApiSingleDisposableObserver<T>(
                    }*/
             is SocketTimeoutException -> {
                 type = ErrorType.NETWORK
+                handleNetworkError(retryAction)
+                return
             }
             is CertPathValidatorException,
-            is IOException, OfflineException() -> {
+            is IOException,
+            is OfflineException -> {
                 type = ErrorType.NO_NETWORK
+                handleNetworkError(retryAction)
+                return
             }
             else -> {
                 type = ErrorType.OTHER
@@ -81,6 +87,11 @@ abstract class ApiSingleDisposableObserver<T>(
     open fun handleNonApplicationError(type: ErrorType) {
         showLoadingIndicator?.postValue(false)
         liveEvent?.postValue(Event(CommonViewAction.NonApplicationError(type)))
+    }
+
+    open fun handleNetworkError(retryAction: () -> Unit) {
+        showLoadingIndicator?.postValue(false)
+        liveEvent?.postValue(Event(CommonViewAction.ShowNetworkError(retryAction)))
     }
 
     override fun onSuccess(response: T) {

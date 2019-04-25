@@ -85,7 +85,9 @@ abstract class BaseFragment : Fragment() {
 
     open fun showNetworkError(listenerAction: () -> Unit) {
         //  showError(getString(R.string.no_network)) { listenerAction() }
-        Snackbar.make(coordinatorLayout, getString(R.string.no_network), Snackbar.LENGTH_LONG).show()
+        Snackbar.make(coordinatorLayout, getString(R.string.no_network), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.retry)) { listenerAction() }
+            .show()
     }
 
     open fun showError(listenerAction: () -> Unit) {

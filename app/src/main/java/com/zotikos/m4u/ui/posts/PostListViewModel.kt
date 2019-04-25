@@ -45,7 +45,8 @@ class PostListViewModel(
     private inner class GetPostsSingle : ApiSingleDisposableObserver<List<PostUIDto>>(
         REQUEST_API_GET_POSTS,
         commonViewActionEvent,
-        showLoadingIndicator
+        showLoadingIndicator,
+        { loadPosts() }
     ) {
 
         override fun onSuccess(response: List<PostUIDto>) {

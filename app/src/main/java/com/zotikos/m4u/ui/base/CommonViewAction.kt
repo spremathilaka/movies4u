@@ -17,6 +17,7 @@ open class CommonViewAction {
 
     data class NonApplicationError(val type: ErrorType) : CommonViewAction()
     data class SetLoadingIndicator(val show: Boolean) : CommonViewAction()
+
     class ShowError(val message: String, val listenerAction: () -> Unit = {}) : CommonViewAction()
     class ShowGenericError(val listenerAction: () -> Unit = {}) : CommonViewAction()
     class ShowNetworkError(val listenerAction: () -> Unit = {}) : CommonViewAction()
