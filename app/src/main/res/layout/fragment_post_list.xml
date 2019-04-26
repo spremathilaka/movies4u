@@ -29,6 +29,7 @@
                     android:id="@+id/swipeRefresh_items"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                 <com.zotikos.m4u.ui.custom.RecyclerViewWithEmptyView
                         android:id="@+id/postList"
                         android:layout_width="0dp"

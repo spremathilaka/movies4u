@@ -124,9 +124,19 @@ https://medium.com/a-problem-like-maria/a-problem-like-navigation-e9821625a70e
 https://medium.com/a-problem-like-maria/a-problem-like-navigation-part-2-63e46a565d4b
 
 https://medium.com/@Alex.v/android-navigation-architecture-component-25b5a7aab8aa
+
 ------------------------
 Android Testing pt 3.1 | Espresso Tests, Automated Disabling Animations
 http://myhexaville.com/2018/01/15/android-espresso-testing/
 
 Empty View for Android's RecyclerView
 http://akbaribrahim.com/empty-view-for-androids-recyclerview/
+
+Adding Swipe-to-Refresh To Your App
+https://developer.android.com/training/swipe/add-swipe-interface
+
+Loading images with data binding and Picasso
+https://android.jlelse.eu/loading-images-with-data-binding-and-picasso-555dad683fdc
+
+Using sample data resources in Android Studio
+https://segunfamisa.com/posts/sample-data-with-android-studio

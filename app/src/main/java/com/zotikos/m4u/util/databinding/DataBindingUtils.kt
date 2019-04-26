@@ -1,6 +1,7 @@
 package com.zotikos.m4u.util.databinding
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
@@ -8,7 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.zotikos.m4u.util.extension.getParentActivity
+import com.zotikos.m4u.util.extension.load
 import timber.log.Timber
+
 
 object DataBindingUtils {
 
@@ -32,5 +35,11 @@ object DataBindingUtils {
     @BindingAdapter("adapter")
     fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
         view.adapter = adapter
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:imageUrl")
+    fun loadImage(imageView: ImageView, imageUrl: String) {
+        imageView.load(imageUrl)
     }
 }

@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.zotikos.m4u.R
 import com.zotikos.m4u.databinding.ItemPostBinding
-import com.zotikos.m4u.ui.vo.PostItemUIModel
 import com.zotikos.m4u.ui.vo.PostUIDto
 
 class PostListAdapter(val clickListener: (PostUIDto) -> Unit) : RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
@@ -33,11 +32,8 @@ class PostListAdapter(val clickListener: (PostUIDto) -> Unit) : RecyclerView.Ada
     }
 
     class ViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val viewModel = PostItemUIModel()
-
         fun bind(post: PostUIDto, clickListener: (PostUIDto) -> Unit) {
-            viewModel.bind(post)
-            binding.postItem = viewModel
+            binding.postItem = post
             binding.root.setOnClickListener { clickListener(post) }
         }
     }

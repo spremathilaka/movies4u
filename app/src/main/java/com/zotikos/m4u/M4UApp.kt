@@ -2,12 +2,15 @@ package com.zotikos.m4u
 
 import android.app.Activity
 import android.app.Application
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import com.zotikos.m4u.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
 import javax.inject.Inject
+
 
 open class M4UApp : Application(), HasActivityInjector {
 
@@ -22,6 +25,7 @@ open class M4UApp : Application(), HasActivityInjector {
             Timber.plant(Timber.DebugTree())
         }
 
+        setUpPicasso()
         initDaggerAppComponent()
     }
 
@@ -33,6 +37,14 @@ open class M4UApp : Application(), HasActivityInjector {
             .inject(this)
     }
 
+    private fun setUpPicasso() {
+        val picassoBuilder = Picasso.Builder(this)
+        picassoBuilder.downloader(OkHttp3Downloader(this, Integer.MAX_VALUE.toLong()))
+        val built = picassoBuilder.build()
+        built.setIndicatorsEnabled(true)
+        built.isLoggingEnabled = BuildConfig.DEBUG
+        Picasso.setSingletonInstance(built)
+    }
 
     override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 }
