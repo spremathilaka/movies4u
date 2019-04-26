@@ -17,6 +17,7 @@ import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
 import com.zotikos.m4u.ui.vo.PostUIDto
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_post_list.*
 import javax.inject.Inject
 
 
@@ -63,9 +64,12 @@ class PostListFragment : BaseFragment() {
 
     private fun setupRecycleView() {
         binding.postList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+        binding.postList.setEmptyView(posts_list_empty_view)
         postListAdapter = PostListAdapter { postItem: PostUIDto -> postItemClicked(postItem) }
         binding.postList.adapter = postListAdapter
         binding.postList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        binding.postList.visibility = View.GONE
+        binding.postsListEmptyView.visibility = View.GONE
 
     }
 
@@ -76,6 +80,7 @@ class PostListFragment : BaseFragment() {
 
             when (action) {
                 is PostsListAction.PostsLoadingSuccess -> {
+                    binding.postList.visibility = View.VISIBLE
                     postListAdapter.updatePostList(action.posts)
                 }
             }

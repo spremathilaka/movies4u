@@ -19,4 +19,6 @@
     <string name="error_unhandled">Apologies, we are experiencing difficulties in processing your request. Please try
         again
     </string>
+    <string name="no_posts">No posts to show</string>
+    <string name="label_refresh">Refresh</string>
 </resources>
