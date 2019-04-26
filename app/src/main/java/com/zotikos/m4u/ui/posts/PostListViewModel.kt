@@ -23,17 +23,21 @@ class PostListViewModel(
     private val _dataList = MutableLiveData<Event<PostsListAction>>()
 
 
-    fun loadPosts() {
+    fun loadPosts(isSwipeRefreshAction: Boolean = false) {
 
         disposable.add(repository.getPosts()
             .compose(schedulerProvider.getSchedulersForSingle()).map { postList ->
                 postList.map { PostUIDto(it) }
             }
             .doOnSubscribe {
-                showLoadingIndicator()
+                if (isSwipeRefreshAction.not()) {
+                    showLoadingIndicator()
+                }
             }
             .doFinally {
-                hideLoadingIndicator()
+                if (isSwipeRefreshAction.not()) {
+                    hideLoadingIndicator()
+                }
             }
             .subscribeWith(GetPostsSingle()))
     }

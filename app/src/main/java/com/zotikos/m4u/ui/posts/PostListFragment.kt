@@ -66,6 +66,7 @@ class PostListFragment : BaseFragment() {
         binding.postList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         binding.postList.setEmptyView(posts_list_empty_view)
         postListAdapter = PostListAdapter { postItem: PostUIDto -> postItemClicked(postItem) }
+        binding.swipeRefreshItems.setOnRefreshListener { viewModel.loadPosts(true) }
         binding.postList.adapter = postListAdapter
         binding.postList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         binding.postList.visibility = View.GONE
@@ -75,6 +76,7 @@ class PostListFragment : BaseFragment() {
 
     private fun observeViewModel() {
 
+
         viewModel.getPosts().observe(viewLifecycleOwner, Observer { event ->
             val action: PostsListAction? = event?.getContentIfNotHandled()
 
@@ -82,11 +84,23 @@ class PostListFragment : BaseFragment() {
                 is PostsListAction.PostsLoadingSuccess -> {
                     binding.postList.visibility = View.VISIBLE
                     postListAdapter.updatePostList(action.posts)
+                    stopSwipeRefresh()
                 }
+
             }
         })
 
         subscribeCommonAction(viewModel.commonViewActionEvent/*, viewModel.loadingIndicator*/)
+    }
+
+    override fun handleExtraActionWhenNetworkError() {
+        stopSwipeRefresh()
+    }
+
+    private fun stopSwipeRefresh() {
+        if (binding.swipeRefreshItems.isRefreshing) {
+            binding.swipeRefreshItems.isRefreshing = false
+        }
     }
 
     override fun onAttach(context: Context) {

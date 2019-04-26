@@ -35,6 +35,7 @@ abstract class BaseFragment : Fragment() {
         liveEvent: LiveData<Event<CommonViewAction>>
         /* showLoadingIndicator: LiveData<Boolean>? = null*/
     ) {
+        handleExtraActionWhenNetworkError()
         liveEvent.observe(this, Observer<Event<CommonViewAction>> { event ->
             val action: CommonViewAction? = event?.getContentIfNotHandled()
             when (action) {
@@ -75,6 +76,9 @@ abstract class BaseFragment : Fragment() {
          })*/
     }
 
+    open fun handleExtraActionWhenNetworkError() {
+
+    }
     // Override this method to handle the http exceptions
     // returned from the service calls
     open fun onError(code: Int?, message: String) {

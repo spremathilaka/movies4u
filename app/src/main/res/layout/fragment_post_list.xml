@@ -25,14 +25,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.zotikos.m4u.ui.custom.RecyclerViewWithEmptyView
-                    android:id="@+id/postList"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefresh_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <com.zotikos.m4u.ui.custom.RecyclerViewWithEmptyView
+                        android:id="@+id/postList"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <!-- Added an empty view which will be shown when the EmptyRecyclerView
          is empty -->
@@ -63,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="32dp"
                     android:padding="8dp"
-                    android:onClick="@{() -> viewModel.loadPosts()}"
+                    android:onClick="@{() -> viewModel.loadPosts(false)}"
                     app:layout_constraintTop_toBottomOf="@+id/msg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
