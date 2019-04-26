@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.posts
+package com.zotikos.m4u.ui.post.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,13 +12,13 @@ class PostListAdapter(val clickListener: (PostUIDto) -> Unit) : RecyclerView.Ada
 
     private lateinit var postList: List<PostUIDto>
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPostBinding =
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_post, parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PostListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(postList[position], clickListener)
     }
 

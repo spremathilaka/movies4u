@@ -2,9 +2,9 @@ package com.zotikos.m4u.di.module
 
 import androidx.lifecycle.ViewModel
 import com.zotikos.m4u.data.repository.PostRepository
-import com.zotikos.m4u.ui.detail.PostDetailsViewModel
 import com.zotikos.m4u.ui.main.MainActivityViewModel
-import com.zotikos.m4u.ui.posts.PostListViewModel
+import com.zotikos.m4u.ui.post.detail.PostDetailsViewModel
+import com.zotikos.m4u.ui.post.list.PostListViewModel
 import com.zotikos.m4u.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides

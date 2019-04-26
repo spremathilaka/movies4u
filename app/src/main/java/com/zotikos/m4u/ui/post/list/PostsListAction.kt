@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.posts
+package com.zotikos.m4u.ui.post.list
 
 import com.zotikos.m4u.ui.vo.PostUIDto
 

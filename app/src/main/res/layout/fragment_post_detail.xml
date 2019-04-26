@@ -7,13 +7,13 @@
 
         <variable
                 name="viewModel"
-                type="com.zotikos.m4u.ui.detail.PostDetailsViewModel"/>
+                type="com.zotikos.m4u.ui.post.detail.PostDetailsViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.detail.PostDetailFragment">
+            tools:context=".ui.post.detail.PostDetailFragment">
 
 
         <ImageView

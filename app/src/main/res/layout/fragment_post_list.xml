@@ -4,7 +4,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.zotikos.m4u.ui.posts.PostListViewModel"/>
+                type="com.zotikos.m4u.ui.post.list.PostListViewModel"/>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"

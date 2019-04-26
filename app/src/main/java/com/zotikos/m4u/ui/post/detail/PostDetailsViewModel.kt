@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.detail
+package com.zotikos.m4u.ui.post.detail
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData

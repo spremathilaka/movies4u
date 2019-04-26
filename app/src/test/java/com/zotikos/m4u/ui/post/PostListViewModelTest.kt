@@ -1,9 +1,11 @@
-package com.zotikos.m4u.ui.posts
+package com.zotikos.m4u.ui.post
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.zotikos.m4u.data.repository.PostRepository
 import com.zotikos.m4u.ui.base.CommonViewAction
+import com.zotikos.m4u.ui.post.list.PostListViewModel
+import com.zotikos.m4u.ui.post.list.PostsListAction
 import com.zotikos.m4u.ui.vo.Event
 import com.zotikos.m4u.util.SchedulerProvider
 import com.zotikos.m4u.util.getDummyPostList

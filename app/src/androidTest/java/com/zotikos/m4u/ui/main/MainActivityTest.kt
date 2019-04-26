@@ -12,8 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.zotikos.m4u.UiTestApp
-import com.zotikos.m4u.di.component.DaggerUITestAppComponent
-import com.zotikos.m4u.ui.posts.PostListAdapter
+import com.zotikos.m4u.ui.post.list.PostListAdapter
 import com.zotikos.m4u.util.CustomMatchers.Companion.withItemCount
 import com.zotikos.m4u.util.MockServerDispatcher
 import com.zotikos.m4u.util.TestUtils.checkSnackBarDisplayedByMessage

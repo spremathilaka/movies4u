@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.posts
+package com.zotikos.m4u.ui.post.list
 
 import android.content.Context
 import android.os.Bundle
@@ -36,7 +36,7 @@ class PostListFragment : BaseFragment() {
 
     private lateinit var postListAdapter: PostListAdapter
 
-    private var listener: PostListFragment.OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
 
 
     override fun onCreateView(
@@ -65,7 +65,8 @@ class PostListFragment : BaseFragment() {
     private fun setupRecycleView() {
         binding.postList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         binding.postList.setEmptyView(posts_list_empty_view)
-        postListAdapter = PostListAdapter { postItem: PostUIDto -> postItemClicked(postItem) }
+        postListAdapter =
+            PostListAdapter { postItem: PostUIDto -> postItemClicked(postItem) }
         binding.swipeRefreshItems.setOnRefreshListener { viewModel.loadPosts(true) }
         binding.postList.adapter = postListAdapter
         binding.postList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -106,7 +107,7 @@ class PostListFragment : BaseFragment() {
     override fun onAttach(context: Context) {
         //with out this error : late init property viewModelFactory has not been initialized
         AndroidSupportInjection.inject(this)
-        if (context is PostListFragment.OnFragmentInteractionListener) {
+        if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
