@@ -140,3 +140,6 @@ https://android.jlelse.eu/loading-images-with-data-binding-and-picasso-555dad683
 
 Using sample data resources in Android Studio
 https://segunfamisa.com/posts/sample-data-with-android-studio
+
+Shared Element Transitions - Updates
+https://mikescamell.com/shared-element-transitions-updates/

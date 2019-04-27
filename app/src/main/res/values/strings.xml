@@ -21,4 +21,9 @@
     </string>
     <string name="no_posts">No posts to show</string>
     <string name="label_refresh">Refresh</string>
+
+
+    <string name="hero_image_transition" translatable="false">HeroImageTransition</string>
+    <string name="title_transition" translatable="false">TitleTransition</string>
+
 </resources>

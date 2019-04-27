@@ -1,5 +1,6 @@
 package com.zotikos.m4u.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ abstract class BaseFragment : Fragment() {
 
     @LayoutRes
     protected abstract fun layoutRes(): Int
+
+    protected lateinit var mContext: Context
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,6 +82,7 @@ abstract class BaseFragment : Fragment() {
     open fun handleExtraActionWhenNetworkError() {
 
     }
+
     // Override this method to handle the http exceptions
     // returned from the service calls
     open fun onError(code: Int?, message: String) {
@@ -145,5 +149,10 @@ abstract class BaseFragment : Fragment() {
          } else {
              loadingView.hideLoadingView()
          }*/
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
     }
 }

@@ -42,4 +42,10 @@ object DataBindingUtils {
     fun loadImage(imageView: ImageView, imageUrl: String) {
         imageView.load(imageUrl)
     }
+
+    /* @JvmStatic
+     @BindingAdapter("bindWithCallBack:imageUrlWithCallBack")
+     fun loadImageWithCalBack(imageView: ImageView, imageUrl: String, callBack: ImageLoadingCallback) {
+         imageView.load(imageUrl, callBack)
+     }*/
 }

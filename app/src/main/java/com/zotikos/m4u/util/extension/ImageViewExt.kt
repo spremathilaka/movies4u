@@ -8,6 +8,10 @@ import com.zotikos.m4u.R
 fun ImageView.load(imageUrl: String) {
     Picasso.get()
         .load(imageUrl)
+        .noFade()
+        /*  .fit()
+          .noFade()
+          .centerCrop()*/
         .error(this.context.getDrawable(R.drawable.default_image)!!)
         .into(this)
 }
@@ -15,6 +19,10 @@ fun ImageView.load(imageUrl: String) {
 fun ImageView.load(imageUrl: String?, callback: ImageLoadingCallback) {
     Picasso.get()
         .load(imageUrl)
+        .noFade()
+        /* .fit()
+         .noFade()
+         .centerCrop()*/
         .into(this, object : Callback {
             override fun onSuccess() = callback.onLoadingSuccess()
 

@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.zotikos.m4u.R
 import com.zotikos.m4u.databinding.FragmentPostListBinding
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
@@ -44,10 +49,7 @@ class PostListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(PostListViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-
+        viewModel = ViewModelProviders.of(this@PostListFragment, viewModelFactory).get(PostListViewModel::class.java)
         viewModel.loadPosts()
 
         binding = DataBindingUtil.inflate(inflater, com.zotikos.m4u.R.layout.fragment_post_list, container, false)
@@ -66,11 +68,20 @@ class PostListFragment : BaseFragment() {
         binding.postList.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         binding.postList.setEmptyView(posts_list_empty_view)
         postListAdapter =
-            PostListAdapter { postItem: PostUIDto -> postItemClicked(postItem) }
+            PostListAdapter(mContext) { postItem: PostUIDto, heroImage: ImageView, postTitle: TextView, position: Int ->
+                postItemClicked(
+                    postItem,
+                    heroImage,
+                    postTitle,
+                    position
+                )
+            }
         binding.swipeRefreshItems.setOnRefreshListener { viewModel.loadPosts(true) }
-        binding.postList.adapter = postListAdapter
-        binding.postList.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        binding.postList.visibility = View.GONE
+        binding.postList.apply {
+            adapter = postListAdapter
+            layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            visibility = View.GONE
+        }
         binding.postsListEmptyView.visibility = View.GONE
 
     }
@@ -127,9 +138,20 @@ class PostListFragment : BaseFragment() {
     }
 
 
-    private fun postItemClicked(postItem: PostUIDto) {
+    private fun postItemClicked(postItem: PostUIDto, heroImage: ImageView, postTitle: TextView, position: Int) {
         Toast.makeText(activity, "Clicked: ${postItem.title}", Toast.LENGTH_LONG).show()
-        listener?.showPostDetail(postItem)
+        val extras = FragmentNavigator.Extras.Builder()
+            .addSharedElement(heroImage, getString(R.string.hero_image_transition))
+            //.addSharedElement(postTitle, getString(R.string.title_transition))
+            .build()
+
+        val action = PostListFragmentDirections.openNotificationDetails(postItem)
+        //val navController = Navigation.findNavController(requireActivity(), com.zotikos.m4u.R.id.nav_fragment)
+        //navController.navigate(action, extras)
+
+        NavHostFragment.findNavController(this@PostListFragment).navigate(action, extras)
+
+        //listener?.showPostDetail(postItem)
     }
 
     interface OnFragmentInteractionListener {

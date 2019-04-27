@@ -6,32 +6,30 @@ import com.zotikos.m4u.data.repository.PostRepository
 import com.zotikos.m4u.ui.base.BaseViewModel
 import com.zotikos.m4u.ui.vo.PostUIDto
 import com.zotikos.m4u.util.SchedulerProvider
-import io.reactivex.disposables.Disposable
 
 class PostDetailsViewModel(
     private val repository: PostRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
-    private lateinit var subscription: Disposable
 
     private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
     var postItem: PostUIDto? = null
 
     init {
-        loadPostDetails()
+        //  loadPostDetails()
     }
 
     private fun loadPostDetails() {
-        subscription = repository.getPosts()
+        compositeDisposable.add(repository.getPosts()
             .compose(schedulerProvider.getSchedulersForSingle())
             .doOnSubscribe { onRetrievePostDetailsStart() }
             .doFinally { onRetrievePostDetailsFinish() }
             .subscribe(
                 { onRetrievePostDetailsSuccess() },
                 { onRetrievePostListError() }
-            )
+            ))
     }
 
 
@@ -51,8 +49,5 @@ class PostDetailsViewModel(
 
     }
 
-    override fun onCleared() {
-        subscription.dispose()
-        super.onCleared()
-    }
+
 }
