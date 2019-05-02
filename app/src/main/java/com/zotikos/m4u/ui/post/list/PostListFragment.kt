@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ import com.zotikos.m4u.R
 import com.zotikos.m4u.databinding.FragmentPostListBinding
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
+import com.zotikos.m4u.ui.vo.PostItemDiffCallback
 import com.zotikos.m4u.ui.vo.PostUIDto
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_post_list.*
@@ -94,8 +96,20 @@ class PostListFragment : BaseFragment() {
 
             when (action) {
                 is PostsListAction.PostsLoadingSuccess -> {
+
+
+                    val diffResult = DiffUtil.calculateDiff(PostItemDiffCallback(action.newPosts, action.oldPosts))
+
+                    postListAdapter.updatePostList(action.oldPosts)
+                    viewModel.oldDataList.clear()
+                    viewModel.oldDataList.addAll(action.newPosts)
+                    diffResult.dispatchUpdatesTo(postListAdapter)
+
                     binding.postList.visibility = View.VISIBLE
-                    postListAdapter.updatePostList(action.posts)
+
+
+                    /*  binding.postList.visibility = View.VISIBLE
+                      postListAdapter.updatePostList(action.posts)*/
                     stopSwipeRefresh()
                 }
 

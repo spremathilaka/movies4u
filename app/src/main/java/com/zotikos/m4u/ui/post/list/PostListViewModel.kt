@@ -22,24 +22,34 @@ class PostListViewModel(
 
     private val _dataList = MutableLiveData<Event<PostsListAction>>()
 
+    private var newDataList = mutableListOf<PostUIDto>()
+
+    var oldDataList = mutableListOf<PostUIDto>()
+
 
     fun loadPosts(isSwipeRefreshAction: Boolean = false) {
 
-        disposable.add(repository.getPosts()
-            .compose(schedulerProvider.getSchedulersForSingle()).map { postList ->
-                postList.map { PostUIDto(it) }
-            }
-            .doOnSubscribe {
-                if (isSwipeRefreshAction.not()) {
-                    showLoadingIndicator()
+
+        if (newDataList.isEmpty() or isSwipeRefreshAction) {
+            newDataList.clear()
+            disposable.add(repository.getPosts()
+                .compose(schedulerProvider.getSchedulersForSingle()).map { postList ->
+                    postList.map { PostUIDto(it) }
                 }
-            }
-            .doFinally {
-                if (isSwipeRefreshAction.not()) {
-                    hideLoadingIndicator()
+                .doOnSubscribe {
+                    if (isSwipeRefreshAction.not()) {
+                        showLoadingIndicator()
+                    }
                 }
-            }
-            .subscribeWith(GetPostsSingle()))
+                .doFinally {
+                    if (isSwipeRefreshAction.not()) {
+                        hideLoadingIndicator()
+                    }
+                }
+                .subscribeWith(GetPostsSingle()))
+        } else {
+            _dataList.value = Event(PostsListAction.PostsLoadingSuccess(newDataList, oldDataList))
+        }
     }
 
     fun getPosts(): LiveData<Event<PostsListAction>> {
@@ -55,7 +65,8 @@ class PostListViewModel(
 
         override fun onSuccess(response: List<PostUIDto>) {
             super.onSuccess(response)
-            _dataList.value = Event(PostsListAction.PostsLoadingSuccess(response))
+            newDataList.addAll(response)
+            _dataList.value = Event(PostsListAction.PostsLoadingSuccess(response, oldDataList))
         }
     }
 
