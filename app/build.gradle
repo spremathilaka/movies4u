@@ -97,10 +97,15 @@ dependencies {
     //implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
 
     implementation "androidx.navigation:navigation-fragment:$nav_version" // For Kotlin use navigation-fragment-ktx
-    //implementation "android.arch.navigation:navigation-fragment-ktx:$navigation_ktx"	//androidx.navigation.fragment
+    implementation "androidx.navigation:navigation-fragment-ktx:$android_navigation_ktx"
+
+
+    implementation "androidx.navigation:navigation-runtime:$nav_version"
+    implementation "androidx.navigation:navigation-runtime-ktx:$android_navigation_ktx"
+
 
     implementation "androidx.navigation:navigation-ui:$nav_version" // For Kotlin use navigation-ui-ktx
-     //implementation "android.arch.navigation:navigation-ui-ktx:$navigation_ktx"      //androidx.navigation.ui
+    implementation "androidx.navigation:navigation-ui-ktx:$android_navigation_ktx"      //androidx.navigation.ui
 
 
      //implementation "android.arch.navigation:navigation-common-ktx:$navigation_ktx"	//androidx.navigation

@@ -1,51 +1,75 @@
+/*
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.zotikos.m4u.ui.post.list
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
 import com.zotikos.m4u.R
 import com.zotikos.m4u.databinding.ItemPostBinding
+import com.zotikos.m4u.ui.common.DataBoundListAdapter
 import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.util.AppExecutors
 
 class PostListAdapter(
-    private val context: Context,
-    private val clickListener: (PostUIDto, ImageView, TextView, Int) -> Unit
-) :
-    RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
-
-    private lateinit var postList: List<PostUIDto>
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemPostBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_post, parent, false)
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(postList[position], clickListener, position)
-    }
-
-    override fun getItemCount(): Int {
-        return if (::postList.isInitialized) postList.size else 0
-    }
-
-    fun updatePostList(postList: List<PostUIDto>) {
-        this.postList = postList
-        notifyDataSetChanged()
-    }
-
-    inner class ViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(post: PostUIDto, clickListener: (PostUIDto, ImageView, TextView, Int) -> Unit, position: Int) {
-            binding.postItem = post
-            binding.postImageView.transitionName =
-                "%s_%d".format(context.getString(R.string.hero_image_transition), position)
-            binding.postTitle.transitionName = "%s_%d".format(context.getString(R.string.title_transition), position)
-            binding.root.setOnClickListener { clickListener(post, binding.postImageView, binding.postTitle, position) }
+    private val dataBindingComponent: DataBindingComponent,
+    appExecutors: AppExecutors,
+    private val callback: ((PostUIDto, ImageView) -> Unit)?
+) : DataBoundListAdapter<PostUIDto, ItemPostBinding>(
+    appExecutors = appExecutors,
+    diffCallback = object : DiffUtil.ItemCallback<PostUIDto>() {
+        override fun areItemsTheSame(oldItem: PostUIDto, newItem: PostUIDto): Boolean {
+            return oldItem.id == newItem.id
         }
+
+        override fun areContentsTheSame(oldItem: PostUIDto, newItem: PostUIDto): Boolean {
+            return oldItem.title == newItem.title
+                    && oldItem.imageUrl == newItem.imageUrl
+        }
+    }
+) {
+
+    override fun createBinding(parent: ViewGroup): ItemPostBinding {
+        val binding = DataBindingUtil
+            .inflate<ItemPostBinding>(
+                LayoutInflater.from(parent.context),
+                R.layout.item_post,
+                parent,
+                false,
+                dataBindingComponent
+            )
+        binding.root.setOnClickListener {
+            binding.postItem?.let {
+                callback?.invoke(it, binding.postImageView)
+            }
+        }
+
+
+        return binding
+    }
+
+    override fun bind(binding: ItemPostBinding, item: PostUIDto, position: Int) {
+        binding.postItem = item
+        binding?.postImageView!!.transitionName =
+            "%s_%d".format(binding.root.context.getString(R.string.hero_image_transition), position)
+        binding?.postTitle?.transitionName =
+            "%s_%d".format(binding.root.context.getString(R.string.title_transition), position)
     }
 }

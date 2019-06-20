@@ -143,3 +143,12 @@ https://segunfamisa.com/posts/sample-data-with-android-studio
 
 Shared Element Transitions - Updates
 https://mikescamell.com/shared-element-transitions-updates/
+
+DiffUtil is a must!
+https://proandroiddev.com/diffutil-is-a-must-797502bc1149
+
+Using DiffUtil in Android RecyclerView
+https://medium.com/@iammert/using-diffutil-in-android-recyclerview-bdca8e4fbb00
+
+A nice combination of RxJava and DiffUtil
+https://hellsoft.se/a-nice-combination-of-rxjava-and-diffutil-fe3807186012

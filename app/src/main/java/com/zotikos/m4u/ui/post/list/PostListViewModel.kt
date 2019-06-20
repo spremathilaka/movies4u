@@ -24,11 +24,12 @@ class PostListViewModel(
 
     private var newDataList = mutableListOf<PostUIDto>()
 
-    var oldDataList = mutableListOf<PostUIDto>()
+    //var oldDataList = mutableListOf<PostUIDto>()
+
+    // var previousDiffResult: DiffUtil.DiffResult? = null
 
 
-    fun loadPosts(isSwipeRefreshAction: Boolean = false) {
-
+    /*fun loadPosts(isSwipeRefreshAction: Boolean = false) {
 
         if (newDataList.isEmpty() or isSwipeRefreshAction) {
             newDataList.clear()
@@ -50,13 +51,46 @@ class PostListViewModel(
         } else {
             _dataList.value = Event(PostsListAction.PostsLoadingSuccess(newDataList, oldDataList))
         }
+    }*/
+
+    fun loadPosts(isSwipeRefreshAction: Boolean = false) {
+
+        if (newDataList.isEmpty() or isSwipeRefreshAction) {
+            newDataList.clear()
+
+            disposable.add(repository.getPosts()
+                .compose(schedulerProvider.getSchedulersForSingle()).map { postList ->
+                    postList.map { PostUIDto(it) }
+                }
+
+                /*.flatMap {
+                    newDataList.addAll(it)
+                    val diffResult = DiffUtil.calculateDiff(PostItemDiffCallback(oldDataList, newDataList),false)
+                    previousDiffResult = diffResult
+                    Single.just(Pair(diffResult, newDataList))
+                }*/
+                .doOnSubscribe {
+                    if (isSwipeRefreshAction.not()) {
+                        showLoadingIndicator()
+                    }
+                }
+                .doFinally {
+                    if (isSwipeRefreshAction.not()) {
+                        hideLoadingIndicator()
+                    }
+                }
+                .subscribeWith(GetPostsDiffResultSingle()))
+        } else {
+            _dataList.value = Event(PostsListAction.PostsLoadingSuccessNew(newDataList))
+        }
     }
+
 
     fun getPosts(): LiveData<Event<PostsListAction>> {
         return _dataList
     }
 
-    private inner class GetPostsSingle : ApiSingleDisposableObserver<List<PostUIDto>>(
+/*    private inner class GetPostsSingle : ApiSingleDisposableObserver<List<PostUIDto>>(
         REQUEST_API_GET_POSTS,
         commonViewActionEvent,
         showLoadingIndicator,
@@ -68,6 +102,22 @@ class PostListViewModel(
             newDataList.addAll(response)
             _dataList.value = Event(PostsListAction.PostsLoadingSuccess(response, oldDataList))
         }
+    }*/
+
+    private inner class GetPostsDiffResultSingle :
+        ApiSingleDisposableObserver<List<PostUIDto>>(
+            REQUEST_API_GET_POSTS,
+            commonViewActionEvent,
+            showLoadingIndicator,
+            { loadPosts() }
+        ) {
+        override fun onSuccess(response: List<PostUIDto>) {
+            super.onSuccess(response)
+            _dataList.value = Event(PostsListAction.PostsLoadingSuccessNew(response))
+            newDataList.clear()
+            newDataList.addAll(response)
+        }
+
     }
 
 

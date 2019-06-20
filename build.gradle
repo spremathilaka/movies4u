@@ -8,10 +8,10 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-alpha01"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.1.0-alpha04"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,6 +21,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 
     }
 }
@@ -30,7 +31,7 @@ ext {
     retrofit_version = '2.5.0'
     dagger2_version = '2.21'
 
-    nav_version = "2.1.0-alpha02"
+    nav_version = "2.1.0-alpha04"
 
     rxjava_version = '2.2.0'
     rxadroid_version = '2.1.0'
@@ -45,7 +46,7 @@ ext {
 
     android_ktx_core_version='1.0.0'
     android_ktx_fragment_version='1.0.0'
-    android_navigation_ktx = '1.0.0-alpha06'
+    android_navigation_ktx = '2.1.0-alpha04'
 
     gson_version = '2.8.5'
     moshi_version = '1.8.0'
