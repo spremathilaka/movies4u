@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.vo
+package com.zotikos.m4u.ui.base
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

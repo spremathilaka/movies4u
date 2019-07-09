@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.post.list
+package com.zotikos.m4u.ui.popularmovies.list
 
 import android.content.Context
 import android.os.Bundle
@@ -17,34 +17,34 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
 import com.zotikos.m4u.R
-import com.zotikos.m4u.databinding.FragmentPostListBinding
+import com.zotikos.m4u.databinding.FragmentMovieListBinding
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
-import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.ui.popularmovies.dto.MovieUIDto
 import com.zotikos.m4u.util.AppExecutors
 import com.zotikos.m4u.util.autoCleared
 import com.zotikos.m4u.util.databinding.FragmentDataBindingComponent
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_post_list.*
+import kotlinx.android.synthetic.main.fragment_movie_list.*
 import javax.inject.Inject
 
 
-class PostListFragment : BaseFragment() {
+class MovieListFragment : BaseFragment() {
 
     companion object {
-        const val FRAGMENT_TAG = "PostListFragment"
+        const val FRAGMENT_TAG = "MovieListFragment"
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: PostListViewModel
+    private lateinit var viewModel: MovieListViewModel
 
-    private lateinit var binding: FragmentPostListBinding
+    private lateinit var binding: FragmentMovieListBinding
 
-    //private lateinit var postListAdapter: PostListAdapter
+    //private lateinit var postListAdapter: MovieListAdapter
 
-    private var adapter by autoCleared<PostListAdapter>()
+    private var adapter by autoCleared<MovieListAdapter>()
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -58,7 +58,7 @@ class PostListFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_list, container, false)
 
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
         return binding.root
@@ -66,19 +66,19 @@ class PostListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this@PostListFragment, viewModelFactory).get(PostListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this@MovieListFragment, viewModelFactory).get(MovieListViewModel::class.java)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         viewModel.loadPosts()
 
         /* postListAdapter =
-             PostListAdapter(
+             MovieListAdapter(
                  arrayListOf(),
                  mContext
-             ) { postItem: PostUIDto, heroImage: ImageView, postTitle: TextView, position: Int ->
+             ) { movieItem: MovieUIDto, heroImage: ImageView, postTitle: TextView, position: Int ->
 
                  postItemClicked(
-                     postItem,
+                     movieItem,
                      heroImage,
                      postTitle,
                      position
@@ -101,14 +101,14 @@ class PostListFragment : BaseFragment() {
         }*/
 
 
-        val adapter = PostListAdapter(dataBindingComponent, appExecutors) { postItem, heroImage ->
+        val adapter = MovieListAdapter(dataBindingComponent, appExecutors) { postItem, heroImage ->
             val extras = FragmentNavigatorExtras(
                 heroImage to getString(R.string.hero_image_transition)
                 /*,
                 postTitle to getString(R.string.title_transition)*/
             )
             navController().navigate(
-                PostListFragmentDirections.openNotificationDetails(postItem),
+                MovieListFragmentDirections.openNotificationDetails(postItem),
                 extras
             )
         }
@@ -131,29 +131,29 @@ class PostListFragment : BaseFragment() {
     private fun observeViewModel() {
 
         viewModel.getPosts().observe(viewLifecycleOwner, Observer { event ->
-            val action: PostsListAction? = event?.getContentIfNotHandled()
+            val action: MovieListAction? = event?.getContentIfNotHandled()
 
             when (action) {
-                is PostsListAction.PostsLoadingSuccessNew -> {
-                    //  postListAdapter.replaceData(action.result, action.newPosts)
+                is MovieListAction.MovieLoadingSuccessNew -> {
+                    //  postListAdapter.replaceData(action.result, action.newMovies)
                     stopSwipeRefresh()
 
-                    if (action.newPosts.isNotEmpty()) {
-                        adapter.submitList(action.newPosts)
+                    if (action.newMovies.isNotEmpty()) {
+                        adapter.submitList(action.newMovies)
                     } else {
                         adapter.submitList(emptyList())
                     }
 
                 }
 
-                /* is PostsListAction.PostsLoadingSuccess -> {
+                /* is MovieListAction.PostsLoadingSuccess -> {
 
 
-                     val diffResult = DiffUtil.calculateDiff(PostItemDiffCallback(action.newPosts, action.oldPosts))
+                     val diffResult = DiffUtil.calculateDiff(PostItemDiffCallback(action.newMovies, action.oldPosts))
 
                      postListAdapter.updatePostList(action.oldPosts)
                      viewModel.oldDataList.clear()
-                     viewModel.oldDataList.addAll(action.newPosts)
+                     viewModel.oldDataList.addAll(action.newMovies)
                      diffResult.dispatchUpdatesTo(postListAdapter)
 
                      binding.postList.visibility = View.VISIBLE
@@ -199,12 +199,12 @@ class PostListFragment : BaseFragment() {
 
 
     override fun layoutRes(): Int {
-        return R.layout.fragment_post_list
+        return R.layout.fragment_movie_list
     }
 
 
-    private fun postItemClicked(postItem: PostUIDto, heroImage: ImageView, postTitle: TextView, position: Int) {
-        Toast.makeText(activity, "Clicked: ${postItem.title}", Toast.LENGTH_LONG).show()
+    private fun postItemClicked(movieItem: MovieUIDto, heroImage: ImageView, postTitle: TextView, position: Int) {
+        Toast.makeText(activity, "Clicked: ${movieItem.title}", Toast.LENGTH_LONG).show()
 
 
         val extras = FragmentNavigatorExtras(
@@ -213,7 +213,7 @@ class PostListFragment : BaseFragment() {
             postTitle to getString(R.string.title_transition)*/
         )
         navController().navigate(
-            PostListFragmentDirections.openNotificationDetails(postItem),
+            MovieListFragmentDirections.openNotificationDetails(movieItem),
             extras
         )
 
@@ -222,17 +222,17 @@ class PostListFragment : BaseFragment() {
              //.addSharedElement(postTitle, getString(R.string.title_transition))
              .build()*/
 
-        //val action = PostListFragmentDirections.openNotificationDetails(postItem)
+        //val action = PostListFragmentDirections.openNotificationDetails(movieItem)
         //val navController = Navigation.findNavController(requireActivity(), com.zotikos.m4u.R.id.nav_fragment)
         //navController.navigate(action, extras)
 
-        //NavHostFragment.findNavController(this@PostListFragment).navigate(action, extras)
+        //NavHostFragment.findNavController(this@MovieListFragment).navigate(action, extras)
 
-        //listener?.showPostDetail(postItem)
+        //listener?.showPostDetail(movieItem)
     }
 
     interface OnFragmentInteractionListener {
-        fun showPostDetail(post: PostUIDto)
+        fun showPostDetail(movie: MovieUIDto)
     }
 
     /**

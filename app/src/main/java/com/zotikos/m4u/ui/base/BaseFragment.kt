@@ -12,10 +12,9 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.zotikos.m4u.R
 import com.zotikos.m4u.data.model.error.ApiErrorResponse
-import com.zotikos.m4u.ui.vo.Event
 import com.zotikos.m4u.util.exceptions.ErrorHandlingDelegate
 import com.zotikos.m4u.util.extension.showAlert
-import kotlinx.android.synthetic.main.fragment_post_list.*
+import kotlinx.android.synthetic.main.fragment_movie_list.*
 
 
 abstract class BaseFragment : Fragment() {

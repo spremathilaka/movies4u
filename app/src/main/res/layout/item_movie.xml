@@ -5,8 +5,8 @@
 
     <data>
         <variable
-                name="postItem"
-                type="com.zotikos.m4u.ui.vo.PostUIDto"/>
+                name="movieItem"
+                type="com.zotikos.m4u.ui.popularmovies.dto.MovieUIDto"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/post_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:srcCompat="@tools:sample/avatars[0]"
-                app:imageUrl="@{postItem.imageUrl}"
+                app:imageUrl="@{movieItem.posterImageURl}"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"/>
 
         <TextView
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 tools:text="Post Tittle"
-                android:text="@{postItem.title}"
+                android:text="@{movieItem.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 tools:text="Your properties area on the right should look like this, with the jagged lines in the Constraints square:"
-                android:text="@{postItem.body}"
+                android:text="@{movieItem.body}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/postImageView"
                 app:layout_constraintTop_toBottomOf="@+id/post_title"

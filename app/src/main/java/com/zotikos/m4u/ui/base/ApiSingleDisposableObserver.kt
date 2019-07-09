@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.zotikos.m4u.data.model.error.ApiErrorResponse
-import com.zotikos.m4u.ui.vo.Event
 import com.zotikos.m4u.util.exceptions.OfflineException
 import io.reactivex.observers.DisposableSingleObserver
 import retrofit2.HttpException
@@ -81,7 +80,15 @@ abstract class ApiSingleDisposableObserver<T>(
 
     open fun handleApplicationError(httpResponseCode: Int, errorResponse: ApiErrorResponse? = null, requestId: Int) {
         showLoadingIndicator?.postValue(false)
-        liveEvent?.postValue(Event(CommonViewAction.ApplicationError(httpResponseCode, errorResponse, requestId)))
+        liveEvent?.postValue(
+            Event(
+                CommonViewAction.ApplicationError(
+                    httpResponseCode,
+                    errorResponse,
+                    requestId
+                )
+            )
+        )
     }
 
     open fun handleNonApplicationError(type: ErrorType) {

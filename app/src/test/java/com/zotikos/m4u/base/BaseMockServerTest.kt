@@ -1,7 +1,7 @@
 package com.zotikos.m4u.base
 
 import com.zotikos.m4u.data.remote.ApiService
-import com.zotikos.m4u.data.repository.PostRepository
+import com.zotikos.m4u.data.repository.MovieRepository
 import com.zotikos.m4u.di.module.NetworkModule
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -13,7 +13,7 @@ open class BaseMockServerTest {
 
     lateinit var mockApiService: ApiService
 
-    lateinit var postRepository: PostRepository
+    lateinit var movieRepository: MovieRepository
 
     @Before
     @Throws(Exception::class)
@@ -28,7 +28,7 @@ open class BaseMockServerTest {
         val retrofit = networkModule.provideRetrofit(serverUrl, moshi, httpClient)
 
         mockApiService = retrofit.create(ApiService::class.java)
-        postRepository = PostRepository(mockApiService)
+        movieRepository = MovieRepository(mockApiService)
 
     }
 

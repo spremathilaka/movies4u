@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zotikos.m4u.ui.post.list
+package com.zotikos.m4u.ui.popularmovies.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -23,40 +23,40 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import com.zotikos.m4u.R
-import com.zotikos.m4u.databinding.ItemPostBinding
+import com.zotikos.m4u.databinding.ItemMovieBinding
 import com.zotikos.m4u.ui.common.DataBoundListAdapter
-import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.ui.popularmovies.dto.MovieUIDto
 import com.zotikos.m4u.util.AppExecutors
 
-class PostListAdapter(
+class MovieListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val callback: ((PostUIDto, ImageView) -> Unit)?
-) : DataBoundListAdapter<PostUIDto, ItemPostBinding>(
+    private val callback: ((MovieUIDto, ImageView) -> Unit)?
+) : DataBoundListAdapter<MovieUIDto, ItemMovieBinding>(
     appExecutors = appExecutors,
-    diffCallback = object : DiffUtil.ItemCallback<PostUIDto>() {
-        override fun areItemsTheSame(oldItem: PostUIDto, newItem: PostUIDto): Boolean {
+    diffCallback = object : DiffUtil.ItemCallback<MovieUIDto>() {
+        override fun areItemsTheSame(oldItem: MovieUIDto, newItem: MovieUIDto): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: PostUIDto, newItem: PostUIDto): Boolean {
+        override fun areContentsTheSame(oldItem: MovieUIDto, newItem: MovieUIDto): Boolean {
             return oldItem.title == newItem.title
                     && oldItem.imageUrl == newItem.imageUrl
         }
     }
 ) {
 
-    override fun createBinding(parent: ViewGroup): ItemPostBinding {
+    override fun createBinding(parent: ViewGroup): ItemMovieBinding {
         val binding = DataBindingUtil
-            .inflate<ItemPostBinding>(
+            .inflate<ItemMovieBinding>(
                 LayoutInflater.from(parent.context),
-                R.layout.item_post,
+                R.layout.item_movie,
                 parent,
                 false,
                 dataBindingComponent
             )
         binding.root.setOnClickListener {
-            binding.postItem?.let {
+            binding.movieItem?.let {
                 callback?.invoke(it, binding.postImageView)
             }
         }
@@ -65,11 +65,11 @@ class PostListAdapter(
         return binding
     }
 
-    override fun bind(binding: ItemPostBinding, item: PostUIDto, position: Int) {
-        binding.postItem = item
-        binding?.postImageView!!.transitionName =
+    override fun bind(binding: ItemMovieBinding, item: MovieUIDto, position: Int) {
+        binding.movieItem = item
+        binding.postImageView.transitionName =
             "%s_%d".format(binding.root.context.getString(R.string.hero_image_transition), position)
-        binding?.postTitle?.transitionName =
+        binding.postTitle.transitionName =
             "%s_%d".format(binding.root.context.getString(R.string.title_transition), position)
     }
 }

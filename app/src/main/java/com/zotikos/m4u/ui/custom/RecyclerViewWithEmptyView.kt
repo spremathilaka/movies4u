@@ -24,15 +24,14 @@ class RecyclerViewWithEmptyView : RecyclerView {
         }
     }
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     constructor(
         context: Context, attrs: AttributeSet,
         defStyle: Int
-    ) : super(context, attrs, defStyle) {
-    }
+    ) : super(context, attrs, defStyle)
 
     internal fun checkIfEmpty() {
         if (emptyView != null && adapter != null) {

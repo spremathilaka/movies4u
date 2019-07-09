@@ -1,28 +1,29 @@
-package com.zotikos.m4u.ui.post.detail
+package com.zotikos.m4u.ui.popularmovies.detail
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.zotikos.m4u.data.repository.PostRepository
+import com.zotikos.m4u.data.repository.MovieRepository
 import com.zotikos.m4u.ui.base.BaseViewModel
-import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.ui.popularmovies.dto.MovieUIDto
 import com.zotikos.m4u.util.SchedulerProvider
 
-class PostDetailsViewModel(
-    private val repository: PostRepository,
+class MovieDetailsViewModel(
+    private val repository: MovieRepository,
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel() {
 
 
     private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
 
-    var postItem: PostUIDto? = null
+    var movieItem: MovieUIDto? = null
 
     init {
         //  loadPostDetails()
     }
 
     private fun loadPostDetails() {
-        compositeDisposable.add(repository.getPosts()
+        compositeDisposable.add(
+            repository.getPopularMovies()
             .compose(schedulerProvider.getSchedulersForSingle())
             .doOnSubscribe { onRetrievePostDetailsStart() }
             .doFinally { onRetrievePostDetailsFinish() }

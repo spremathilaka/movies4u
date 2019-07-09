@@ -15,7 +15,7 @@ class MockServerDispatcher {
 
         override fun dispatch(request: RecordedRequest?): MockResponse {
             return when {
-                request?.path == "/posts" -> MockResponse().setResponseCode(200).setBody(TestUtils.readJsonFile("json/post_response.json"))
+                request?.path == "/posts" -> MockResponse().setResponseCode(200).setBody(TestUtils.readJsonFile("json/movie_response.json"))
                 else -> MockResponse().setResponseCode(404)
             }
 

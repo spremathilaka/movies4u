@@ -4,16 +4,13 @@ package com.zotikos.m4u.ui.main
 import android.content.Intent
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.zotikos.m4u.UiTestApp
 import com.zotikos.m4u.di.component.DaggerUITestAppComponent
-import com.zotikos.m4u.ui.post.list.PostListAdapter
 import com.zotikos.m4u.util.CustomMatchers.Companion.withItemCount
 import com.zotikos.m4u.util.MockServerDispatcher
 import com.zotikos.m4u.util.TestUtils.checkSnackBarDisplayedByMessage
@@ -103,7 +100,7 @@ class MainActivityTest {
         launchActivity()
         onView(withId(com.zotikos.m4u.R.id.postList))
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition<PostListAdapter.>(0, click())
+                RecyclerViewActions.actionOnItemAtPosition<MovieListAdapter.>(0, click())
             )
         onView(withText("sunt aut facere repellat provident occaecati excepturi optio reprehenderit")).check(
             matches(

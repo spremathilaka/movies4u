@@ -1,7 +1,7 @@
 package com.zotikos.m4u.ui.main
 
-import com.zotikos.m4u.ui.post.detail.PostDetailFragment
-import com.zotikos.m4u.ui.post.list.PostListFragment
+import com.zotikos.m4u.ui.popularmovies.detail.MovieDetailFragment
+import com.zotikos.m4u.ui.popularmovies.list.MovieListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,8 +10,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainFragmentModule {
 
     @ContributesAndroidInjector
-    internal abstract fun provideListFragment(): PostListFragment
+    internal abstract fun provideListFragment(): MovieListFragment
 
     @ContributesAndroidInjector
-    internal abstract fun provideDetailsFragment(): PostDetailFragment
+    internal abstract fun provideDetailsFragment(): MovieDetailFragment
 }

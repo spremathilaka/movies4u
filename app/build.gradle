@@ -32,12 +32,12 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', "API_KEY", "\"\""
+            buildConfigField 'String', "API_KEY", MOVIE_DB_API_KEY
             buildConfigField("long", "NETWORK_DELAY", "0")
         }
 
         release {
-            buildConfigField 'String', "API_KEY", "\"\""
+            buildConfigField 'String', "API_KEY",MOVIE_DB_API_KEY
             buildConfigField("long", "NETWORK_DELAY", "0")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -68,13 +68,15 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.google.android.material:material:$material_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 
     //android -ktx
     implementation "androidx.core:core-ktx:$android_ktx_core_version"
     implementation "androidx.fragment:fragment-ktx:$android_ktx_fragment_version"
 
-    implementation "com.google.android.material:material:$material_version"
+
 
     // Constraint Layout
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"

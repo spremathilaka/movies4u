@@ -3,7 +3,6 @@ package com.zotikos.m4u.ui.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zotikos.m4u.ui.vo.Event
 import io.reactivex.disposables.CompositeDisposable
 
 open class BaseViewModel : ViewModel() {

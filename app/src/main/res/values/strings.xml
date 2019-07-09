@@ -25,5 +25,7 @@
 
     <string name="hero_image_transition" translatable="false">HeroImageTransition</string>
     <string name="title_transition" translatable="false">TitleTransition</string>
+    <string name="movie_list_screen_label">Popular Movies</string>
+    <string name="movie_details_screen_label">Details</string>
 
 </resources>

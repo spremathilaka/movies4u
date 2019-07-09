@@ -1,4 +1,4 @@
-THis Project use the following Medium post
+THis Project use the following Medium movie
 how can we use the MVVM pattern with Retrofit, RxJava, and Dagger 2.
 
 Basic MVVM/ RX/DAGGER
@@ -45,6 +45,9 @@ https://www.techyourchance.com/dependency-injection-viewmodel-with-dagger-2/
 
 Android testing using Dagger 2, Mockito and a custom JUnit rul
 https://medium.com/@fabioCollini/android-testing-using-dagger-2-mockito-and-a-custom-junit-rule-c8487ed01b56
+
+Dagger 2 for Android, Part III ー The @Qualifier and @Named Annotation
+https://bloggie.io/@_junrong/dagger-2-for-android-part-iii-the-qualifier-and-named-annotation
 -------------------------------------------------
 Hiding API keys from your Android repository
 https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
@@ -91,7 +94,7 @@ Integrate Espresso Idling Resources in your app to build flexible UI tests
 https://android.jlelse.eu/integrate-espresso-idling-resources-in-your-app-to-build-flexible-ui-tests-c779e24f5057
         
 PSA: Dont Use Espresso Idling Resources like Google does
-https://www.philosophicalhacker.com/post/psa-dont-use-esprsso-idling-resources-like-this/
+https://www.philosophicalhacker.com/movie/psa-dont-use-esprsso-idling-resources-like-this/
 
 Android Testing pt 3.2 | Espresso Idling Resources With Firebase
 http://myhexaville.com/2018/01/22/android-espresso-idling-resouces-firebase/
@@ -152,3 +155,6 @@ https://medium.com/@iammert/using-diffutil-in-android-recyclerview-bdca8e4fbb00
 
 A nice combination of RxJava and DiffUtil
 https://hellsoft.se/a-nice-combination-of-rxjava-and-diffutil-fe3807186012
+
+Gradle: Android Build Variables Done Right
+https://medium.com/@rafamatias/gradle-android-build-variables-done-right-d0c0e296ee93

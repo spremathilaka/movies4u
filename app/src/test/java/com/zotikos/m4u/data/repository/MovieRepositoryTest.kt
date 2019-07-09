@@ -13,7 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
-class PostRepositoryTest {
+class MovieRepositoryTest {
 
     @Mock
     private lateinit var mockApiService: ApiService
@@ -23,24 +23,24 @@ class PostRepositoryTest {
         Schedulers.trampoline()
     )
 
-    private lateinit var postRepository: PostRepository
+    private lateinit var movieRepository: MovieRepository
 
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        postRepository = PostRepository(mockApiService)
+        movieRepository = MovieRepository(mockApiService)
     }
 
     @Test
     fun should_return_posts_when_api_success() {
 
-        Mockito.`when`(mockApiService.getPosts())
+        Mockito.`when`(mockApiService.getPopularMovies())
             .thenReturn(Single.just(getDummyPostList()))
 
         val testObserver = TestObserver<List<Post>>()
 
-        postRepository.getPosts()
+        movieRepository.getPopularMovies()
             .subscribe(testObserver)
 
         testObserver.assertNoErrors()

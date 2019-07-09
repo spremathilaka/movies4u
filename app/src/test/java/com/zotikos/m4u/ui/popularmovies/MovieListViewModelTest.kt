@@ -1,12 +1,12 @@
-package com.zotikos.m4u.ui.post
+package com.zotikos.m4u.ui.popularmovies
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.zotikos.m4u.data.repository.PostRepository
+import com.zotikos.m4u.data.repository.MovieRepository
 import com.zotikos.m4u.ui.base.CommonViewAction
-import com.zotikos.m4u.ui.post.list.PostListViewModel
-import com.zotikos.m4u.ui.post.list.PostsListAction
-import com.zotikos.m4u.ui.vo.Event
+import com.zotikos.m4u.ui.base.Event
+import com.zotikos.m4u.ui.popularmovies.list.MovieListAction
+import com.zotikos.m4u.ui.popularmovies.list.MovieListViewModel
 import com.zotikos.m4u.util.SchedulerProvider
 import com.zotikos.m4u.util.getDummyPostList
 import io.reactivex.Single
@@ -22,7 +22,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import java.io.IOException
 
-class PostListViewModelTest {
+class MovieListViewModelTest {
 
 
     //Add an instant task executor rule to your unit tests to make live data emit immediately
@@ -35,25 +35,25 @@ class PostListViewModelTest {
     val instantTaskExecutorRule: TestRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var mockRepository: PostRepository
+    private lateinit var mockRepository: MovieRepository
 
     //LiveData will emit values is if it has an observer.
     // But we want to run our tests without creating an Activity or Fragment.
     @Mock
-    lateinit var observer: Observer<Event<PostsListAction>>
+    lateinit var observer: Observer<Event<MovieListAction>>
 
     private val schedulerProvider = SchedulerProvider(
         Schedulers.trampoline(),
         Schedulers.trampoline()
     )
 
-    private lateinit var postListViewModel: PostListViewModel
+    private lateinit var postListViewModel: MovieListViewModel
 
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        postListViewModel = PostListViewModel(mockRepository, schedulerProvider)
+        postListViewModel = MovieListViewModel(mockRepository, schedulerProvider, "https://jsonlint.com/")
     }
 
 
@@ -62,15 +62,15 @@ class PostListViewModelTest {
         //If our live data does not have an observer, then onChanged events will not be emitted
         postListViewModel.getPosts().observeForever(observer)
 
-        Mockito.`when`(mockRepository.getPosts())
+        Mockito.`when`(mockRepository.getPopularMovies())
             .thenReturn(Single.just(getDummyPostList()))
 
         postListViewModel.loadPosts()
 
         val actual = postListViewModel.getPosts().value?.getContentIfNotHandled()
 
-        Assert.assertTrue(actual is PostsListAction.PostsLoadingSuccess)
-        assertEquals(3, (actual as PostsListAction.PostsLoadingSuccess).posts.size)
+        Assert.assertTrue(actual is MovieListAction.MovieLoadingSuccessNew)
+        assertEquals(3, (actual as MovieListAction.MovieLoadingSuccessNew).newMovies.size)
     }
 
 
@@ -79,7 +79,7 @@ class PostListViewModelTest {
         //If our live data does not have an observer, then onChanged events will not be emitted
         postListViewModel.getPosts().observeForever(observer)
 
-        Mockito.`when`(mockRepository.getPosts())
+        Mockito.`when`(mockRepository.getPopularMovies())
             .thenReturn(Single.error(IOException("")))
 
         postListViewModel.loadPosts()
@@ -88,7 +88,7 @@ class PostListViewModelTest {
             postListViewModel.commonViewActionEvent.value?.getContentIfNotHandled()
                     is CommonViewAction.NonApplicationError
         )
-        // assertEquals(0, (actual as PostsListAction.PostsLoadingSuccess).posts.size)
+        // assertEquals(0, (actual as MovieListAction.PostsLoadingSuccess).posts.size)
     }
 
 }

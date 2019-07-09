@@ -1,4 +1,4 @@
-package com.zotikos.m4u.ui.post.detail
+package com.zotikos.m4u.ui.popularmovies.detail
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.zotikos.m4u.R
-import com.zotikos.m4u.databinding.FragmentPostDetailBinding
+import com.zotikos.m4u.databinding.FragmentMovieDetailBinding
 import com.zotikos.m4u.di.module.ViewModelFactory
 import com.zotikos.m4u.ui.base.BaseFragment
-import com.zotikos.m4u.ui.vo.PostUIDto
+import com.zotikos.m4u.ui.popularmovies.dto.MovieUIDto
 import com.zotikos.m4u.util.extension.ImageLoadingCallback
 import com.zotikos.m4u.util.extension.load
 import dagger.android.support.AndroidSupportInjection
@@ -20,26 +20,26 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class PostDetailFragment : BaseFragment(), ImageLoadingCallback {
+class MovieDetailFragment : BaseFragment(), ImageLoadingCallback {
 
 
     companion object {
 
-        const val FRAGMENT_TAG = "PostDetailFragment"
+        const val FRAGMENT_TAG = "MovieDetailFragment"
 
         @JvmStatic
         fun newInstance() =
-            PostDetailFragment()
+            MovieDetailFragment()
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: PostDetailsViewModel
+    private lateinit var viewModel: MovieDetailsViewModel
 
-    private lateinit var binding: FragmentPostDetailBinding
+    private lateinit var binding: FragmentMovieDetailBinding
 
-    private var selectedPostItem: PostUIDto? = null
+    private var selectedMovieItem: MovieUIDto? = null
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -48,11 +48,11 @@ class PostDetailFragment : BaseFragment(), ImageLoadingCallback {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
-        selectedPostItem = arguments?.let { PostDetailFragmentArgs.fromBundle(it).postDetails }
+        selectedMovieItem = arguments?.let { MovieDetailFragmentArgs.fromBundle(it).movieDetails }
 
         viewModel =
-            ViewModelProviders.of(this@PostDetailFragment, viewModelFactory).get(PostDetailsViewModel::class.java)
-        viewModel.postItem = selectedPostItem
+            ViewModelProviders.of(this@MovieDetailFragment, viewModelFactory).get(MovieDetailsViewModel::class.java)
+        viewModel.movieItem = selectedMovieItem
 
         observeViewModel()
     }
@@ -68,7 +68,7 @@ class PostDetailFragment : BaseFragment(), ImageLoadingCallback {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_detail, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_detail, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -77,8 +77,8 @@ class PostDetailFragment : BaseFragment(), ImageLoadingCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("ImageURL " + selectedPostItem?.imageUrl)
-        binding.postImageView.load(selectedPostItem?.imageUrl, this)
+        Timber.d("ImageURL " + selectedMovieItem?.posterImageURl)
+        binding.postImageView.load(selectedMovieItem?.posterImageURl, this)
         //  postponeEnterTransition()
     }
 
@@ -104,8 +104,7 @@ class PostDetailFragment : BaseFragment(), ImageLoadingCallback {
     }
 
 
-
-    override fun layoutRes(): Int = R.layout.fragment_post_detail
+    override fun layoutRes(): Int = R.layout.fragment_movie_detail
 
 
     override fun onLoadingSuccess() {

@@ -1,8 +1,8 @@
 package com.zotikos.m4u.util
 
-import com.zotikos.m4u.data.model.post.Post
+import com.zotikos.m4u.data.model.movie.PopularMovieResponse
 
-fun getDummyPostList(): List<Post> {
-    val ret = Array<Post>::class.java
-    return TestUtils.loadData("json/post_response.json", ret)!!.toList()
+fun getDummyPostList(): PopularMovieResponse {
+    val response = TestUtils.loadData("json/movie_response.json", PopularMovieResponse::class.java)
+    return response!!
 }
